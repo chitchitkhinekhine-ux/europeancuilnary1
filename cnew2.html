@@ -1,0 +1,1886 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exquisite Culinary Journey</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#D9534F', /* Appetizing Red */
+                        secondary: '#F2A900', /* Warm Gold */
+                        bgPremium: '#1A1A1A', /* Dark Elegant Charcoal */
+                        textMain: '#FDFBF7', /* Off-white for readability */
+                        accent: '#E6E6E6', /* Subtle light grey */
+                        detailsBtn: '#C0392B' /* Deep Red for buttons */
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                        myanmar: ['Padauk', 'sans-serif'] // For Myanmar Text
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom Styles for smooth transitions and aesthetics */
+        body {
+            background-color: #1A1A1A;
+            color: #FDFBF7;
+            overflow-x: hidden;
+        }
+
+        .glass-panel {
+            background: rgba(30, 30, 30, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .dish-image-container {
+            position: relative;
+            overflow: hidden;
+            border-radius: 0.75rem;
+            /* rounded-xl */
+        }
+
+        .dish-image {
+            transition: transform 0.5s ease;
+        }
+
+        .dish-image-container:hover .dish-image {
+            transform: scale(1.05);
+        }
+
+        .lang-switch {
+            transition: color 0.3s ease;
+        }
+
+        .lang-switch:hover {
+            color: #F2A900;
+        }
+
+        /* Page Transition Animation */
+        .fade-in {
+            animation: fadeIn 0.5s ease-in forwards;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Profile Image Expand Animation */
+        @keyframes expandProfile {
+            0% {
+                transform: scale(0.2);
+                opacity: 0;
+            }
+
+            70% {
+                transform: scale(1.05);
+                opacity: 1;
+            }
+
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .expand-profile-anim {
+            animation: expandProfile 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+
+        /* Staggered Fade In for text */
+        .fade-in-delayed {
+            opacity: 0;
+            animation: fadeIn 0.6s ease-in forwards;
+            animation-delay: 0.3s;
+        }
+
+        .ingredient-list li {
+            position: relative;
+            padding-left: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .ingredient-list li::before {
+            content: '•';
+            color: #F2A900;
+            position: absolute;
+            left: 0;
+            font-size: 1.2rem;
+            line-height: 1;
+        }
+
+        .lang-en {
+            display: block;
+        }
+
+        .lang-mm {
+            display: none;
+            font-family: 'Padauk', sans-serif;
+            line-height: 1.8;
+        }
+
+        body.mm-active .lang-en {
+            display: none;
+        }
+
+        body.mm-active .lang-mm {
+            display: block;
+        }
+
+        /* 3D Parallax Float Animation */
+        @keyframes float {
+            0% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-30px) rotate(15deg); }
+            100% { transform: translateY(0) rotate(0deg); }
+        }
+        .perspective-1000 {
+            perspective: 1000px;
+        }
+    </style>
+</head>
+
+<body class="font-sans antialiased relative">
+
+    <!-- 3D Culinary Parallax Background -->
+    <div id="parallax-bg-container" class="fixed inset-0 z-[-1] overflow-hidden pointer-events-none perspective-1000">
+        <!-- Layer 1: Culinary Image Background (Deepest) -->
+        <div id="parallax-layer-1" class="absolute inset-[-5%] w-[110%] h-[110%] bg-cover bg-center bg-no-repeat transition-transform duration-200 ease-out" 
+             style="background-image: url('https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=2070&auto=format&fit=crop'); opacity: 0.12; filter: grayscale(30%) contrast(1.2);">
+        </div>
+        
+        <!-- Layer 2: Ambient Glowing Lights (Middle) -->
+        <div id="parallax-layer-2" class="absolute inset-0 w-full h-full transition-transform duration-200 ease-out">
+            <div class="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-primary rounded-full mix-blend-multiply filter blur-[100px] opacity-20"></div>
+            <div class="absolute bottom-[-10%] right-[-10%] w-[500px] h-[500px] bg-secondary rounded-full mix-blend-multiply filter blur-[100px] opacity-20"></div>
+            <div class="absolute top-[40%] left-[60%] w-[300px] h-[300px] bg-[#C0392B] rounded-full mix-blend-multiply filter blur-[80px] opacity-10"></div>
+        </div>
+
+        <!-- Layer 3: Floating Culinary Elements (Closest) -->
+        <div id="parallax-layer-3" class="absolute inset-0 w-full h-full transition-transform duration-200 ease-out opacity-25">
+            <i class="fas fa-leaf absolute top-[15%] left-[10%] text-5xl text-green-600 filter blur-[3px] animate-[float_7s_ease-in-out_infinite]"></i>
+            <i class="fas fa-wine-glass absolute top-[65%] right-[15%] text-7xl text-primary filter blur-[5px] animate-[float_11s_ease-in-out_infinite_reverse]"></i>
+            <i class="fas fa-pepper-hot absolute bottom-[25%] left-[20%] text-6xl text-red-600 filter blur-[2px] animate-[float_9s_ease-in-out_infinite]"></i>
+            <i class="fas fa-lemon absolute top-[25%] right-[25%] text-4xl text-secondary filter blur-[4px] animate-[float_8s_ease-in-out_infinite_reverse]"></i>
+            <i class="fas fa-utensils absolute bottom-[10%] right-[40%] text-5xl text-gray-400 filter blur-[2px] animate-[float_10s_ease-in-out_infinite]"></i>
+        </div>
+    </div>
+
+    <!-- Navigation / Header -->
+    <nav
+        class="fixed w-full z-40 glass-panel py-4 px-6 md:px-12 flex justify-between items-center transition-all duration-300 shadow-lg">
+        <div class="text-2xl font-serif font-bold text-secondary tracking-wider">
+            <span class="lang-en">L'Art Culinaire</span>
+            <span class="lang-mm text-xl">အနုပညာမြောက် ဟင်းလျာများ</span>
+        </div>
+        <div class="flex items-center space-x-4">
+            <button id="btn-en" class="lang-switch text-secondary font-semibold focus:outline-none"
+                onclick="setLanguage('en')">EN</button>
+            <span class="text-gray-500">|</span>
+            <button id="btn-mm" class="lang-switch text-gray-400 font-semibold focus:outline-none"
+                onclick="setLanguage('mm')">မြန်မာ</button>
+        </div>
+    </nav>
+
+    <div id="main-view" class="fade-in">
+        <!-- Hero Section -->
+        <header
+            class="relative pt-32 pb-20 px-6 md:px-12 flex flex-col items-center justify-center text-center min-h-[60vh]">
+            <h1 class="text-5xl md:text-7xl font-serif font-bold mb-6 leading-tight">
+                <span class="lang-en">A Symphony of <span class="text-primary italic">Flavors</span></span>
+                <span class="lang-mm">အရသာတို့၏ <span class="text-primary">ပေါင်းစပ်မှု</span></span>
+            </h1>
+            <p class="text-lg md:text-xl text-accent max-w-2xl font-light">
+                <span class="lang-en">Welcome. Today, I present a carefully curated three-course set menu designed to
+                    awaken your palate and delight your senses.</span>
+                <span class="lang-mm">ကြိုဆိုပါတယ်။ ဒီနေ့မှာတော့ သင့်ရဲ့ အရသာခံဖုလေးတွေကို နိုးကြားစေပြီး အာရုံတွေကို
+                    ကြည်နူးစေမယ့် ဂရုတစိုက်ရွေးချယ်ထားတဲ့ ဟင်းပွဲ ၃ မျိုးပါ Set Menu ကို တင်ဆက်ပေးသွားမှာပါ။</span>
+            </p>
+            <div class="mt-10 animate-bounce text-secondary">
+                <i class="fas fa-chevron-down text-2xl"></i>
+            </div>
+        </header>
+
+        <!-- Menu Section -->
+        <main class="max-w-7xl mx-auto px-6 md:px-12 py-12 space-y-24">
+
+            <!-- Presenter Profile Trigger (Clickable) -->
+            <section class="flex justify-center w-full">
+                <button onclick="showPage('detail-profile')"
+                    class="group relative bg-black/40 backdrop-blur-md border border-gray-700/50 p-3 pr-6 rounded-full flex items-center gap-4 shadow-xl hover:bg-black/60 hover:border-secondary/50 transition-all duration-300 overflow-hidden cursor-pointer focus:outline-none focus:ring-2 focus:ring-secondary/50">
+                    <div
+                        class="absolute inset-0 w-full h-full bg-gradient-to-r from-primary/10 to-secondary/10 transform translate-x-[-100%] group-hover:translate-x-0 transition-transform duration-500">
+                    </div>
+                    <img src="image/dreamina-2026-05-15-1205-This is my face reference, outfit refere.jpg"
+                        alt="Profile Picture"
+                        class="w-16 h-16 md:w-20 md:h-20 object-cover rounded-full border-2 border-secondary relative z-10 shadow-[0_0_15px_rgba(242,169,0,0.2)]">
+                    <div class="text-left relative z-10">
+                        <span
+                            class="block text-secondary text-[10px] md:text-xs font-semibold tracking-widest uppercase mb-1">
+                            <span class="lang-en">Presenter Profile</span>
+                            <span class="lang-mm">တင်ဆက်သူအကြောင်း</span>
+                        </span>
+                        <h3
+                            class="text-lg md:text-xl font-serif font-bold text-white group-hover:text-secondary transition-colors">
+                            <span class="lang-en">Htet Myat Oo</span>
+                            <span class="lang-mm">ထက်မြတ်ဦး</span>
+                        </h3>
+                    </div>
+                    <div
+                        class="relative z-10 ml-2 md:ml-6 w-8 h-8 rounded-full bg-gray-800 flex items-center justify-center group-hover:bg-secondary transition-colors">
+                        <i class="fas fa-arrow-right text-gray-400 group-hover:text-black transition-colors"></i>
+                    </div>
+                </button>
+            </section>
+
+            <!-- 1. SOUP -->
+            <section class="flex flex-col md:flex-row items-center gap-12 group">
+                <div class="w-full md:w-1/2 dish-image-container shadow-2xl shadow-primary/20">
+                    <img src="https://images.unsplash.com/photo-1547592166-23ac45744acd?q=80&w=2071&auto=format&fit=crop"
+                        alt="Mushroom Truffle Velouté" class="w-full h-[400px] object-cover dish-image rounded-xl">
+                </div>
+                <div class="w-full md:w-1/2 space-y-6">
+                    <div
+                        class="inline-block px-3 py-1 bg-secondary/20 text-secondary text-sm font-semibold tracking-widest uppercase rounded-full">
+                        <span class="lang-en">Appetizer / Soup</span>
+                        <span class="lang-mm">အမြည်း / ဟင်းချို</span>
+                    </div>
+                    <h2 class="text-4xl font-serif font-bold text-white">
+                        <span class="lang-en">Wild Mushroom & Truffle Velouté</span>
+                        <span class="lang-mm">တောမှို နှင့် ထရက်ဖယ်လ်ဆီမွှေး ဟင်းချိုအနှစ်</span>
+                    </h2>
+                    <p class="text-gray-300 leading-relaxed">
+                        <span class="lang-en">An earthy, velvety soup crafted from roasted wild mushrooms, finished with
+                            a touch of fresh cream and a decadent drizzle of white truffle oil to awaken your
+                            senses.</span>
+                        <span class="lang-mm">လှော်ထားသော တောမှိုအမျိုးမျိုးဖြင့် ပြုလုပ်ထားပြီး ခရင်မ်အနှစ်နှင့်
+                            အလွန်မွှေးကြိုင်သော ထရက်ဖယ်လ် (Truffle) ဆီမွှေးတို့ဖြင့် ပေါင်းစပ်ဖန်တီးထားသည့်
+                            ကတ္တီပါသားကဲ့သို့ နူးညံ့သော ဟင်းချိုအနှစ်ဖြစ်ပါသည်။</span>
+                    </p>
+                    <button onclick="showPage('detail-soup')"
+                        class="bg-detailsBtn hover:bg-primary text-white font-semibold py-3 px-8 rounded-full transition-colors duration-300 shadow-lg shadow-detailsBtn/30 flex items-center gap-2 group-hover:scale-105 transform">
+                        <i class="fas fa-utensils"></i>
+                        <span class="lang-en">View Recipe Details</span>
+                        <span class="lang-mm">ဟင်းချက်နည်း အသေးစိတ်ကြည့်ရန်</span>
+                    </button>
+                </div>
+            </section>
+
+            <!-- 2. SALAD -->
+            <section class="flex flex-col md:flex-row-reverse items-center gap-12 group">
+                <div class="w-full md:w-1/2 dish-image-container shadow-2xl shadow-secondary/20">
+                    <img src="tomato/5.png" alt="Burrata and Heirloom Tomato Salad"
+                        class="w-full h-[400px] object-cover dish-image rounded-xl">
+                </div>
+                <div class="w-full md:w-1/2 space-y-6 text-left md:text-right">
+                    <div
+                        class="inline-block px-3 py-1 bg-primary/20 text-primary text-sm font-semibold tracking-widest uppercase rounded-full">
+                        <span class="lang-en">Refreshment / Salad</span>
+                        <span class="lang-mm">လန်းဆန်းစေရန် / သုပ်</span>
+                    </div>
+                    <h2 class="text-4xl font-serif font-bold text-white">
+                        <span class="lang-en">Heirloom Tomato & Artisanal Burrata</span>
+                        <span class="lang-mm">ရောင်စုံခရမ်းချဉ်သီး နှင့် ဘူရာတာဒိန်ခဲသုပ်</span>
+                    </h2>
+                    <p class="text-gray-300 leading-relaxed">
+                        <span class="lang-en">A vibrant, refreshing transition featuring creamy Burrata cheese from
+                            Puglia, paired with sweet, thinly sliced heirloom tomatoes, fresh basil oil, and aged
+                            balsamic reduction.</span>
+                        <span class="lang-mm">အီတလီနိုင်ငံ ပူလီယာ (Puglia) ဒေသထွက် အလွန်နူးညံ့ပြီး အရည်ရွှမ်းသော ဘူရာတာ
+                            (Burrata) ဒိန်ခဲကို၊ သဘာဝအချိုဓာတ်ပြည့်ဝသော ရောင်စုံခရမ်းချဉ်သီးများ၊ ပင်စိမ်းဆီမွှေး၊
+                            သက်တမ်းရင့် ဘော်ဆာမစ် (Balsamic) ရှာလကာရည်အနှစ်တို့ဖြင့် တွဲဖက်ထားသော လန်းဆန်းစေမည့်
+                            အသုပ်ဖြစ်ပါသည်။</span>
+                    </p>
+                    <div class="flex md:justify-end">
+                        <button onclick="showPage('detail-salad')"
+                            class="bg-detailsBtn hover:bg-primary text-white font-semibold py-3 px-8 rounded-full transition-colors duration-300 shadow-lg shadow-detailsBtn/30 flex items-center gap-2 group-hover:scale-105 transform">
+                            <i class="fas fa-leaf"></i>
+                            <span class="lang-en">View Recipe Details</span>
+                            <span class="lang-mm">ဟင်းချက်နည်း အသေးစိတ်ကြည့်ရန်</span>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 3. MAIN COURSE -->
+            <section class="flex flex-col md:flex-row items-center gap-12 group pb-20">
+                <div class="w-full md:w-1/2 dish-image-container shadow-2xl shadow-primary/20">
+                    <img src="image/Gemini_Generated_Image_eorlueeorlueeorl.png" alt="Wagyu Beef Filet"
+                        class="w-full h-[500px] object-cover dish-image rounded-xl">
+                </div>
+                <div class="w-full md:w-1/2 space-y-6">
+                    <div
+                        class="inline-block px-3 py-1 bg-secondary/20 text-secondary text-sm font-semibold tracking-widest uppercase rounded-full">
+                        <span class="lang-en">The Climax / Main Course</span>
+                        <span class="lang-mm">အဓိက / အသားဟင်း</span>
+                    </div>
+                    <h2 class="text-4xl md:text-5xl font-serif font-bold text-white">
+                        <span class="lang-en">Herb-Crusted Rack of Lamb</span>
+                        <span class="lang-mm">ဟင်းခတ်အမွှေးအကြိုင်ကပ် သိုးနံရိုးကင်</span>
+                    </h2>
+                    <p class="text-gray-300 leading-relaxed text-lg">
+                        <span class="lang-en">The star of the evening. Tender rack of lamb coated in a fragrant
+                            pistachio and rosemary crust, served with a rich red wine demi-glace and smoked potato
+                            purée.</span>
+                        <span class="lang-mm">ဒီညစာရဲ့ ကြယ်ပွင့်ပါ။ ပစ်စတာချီယို (Pistachio) နဲ့ ရို့စ်မေရီ (Rosemary)
+                            အမွှေးအကြိုင်တွေ ကပ်ထားတဲ့ နူးညံ့တဲ့ သိုးနံရိုးကင်ကို၊ ဝိုင်နီဆော့စ်အနှစ် (Red Wine
+                            Demi-glace) နဲ့ အခိုးအငွေ့နံ့သင်းတဲ့ အာလူးထောင်းတို့နဲ့ တွဲဖက်တည်ခင်းထားပါတယ်။</span>
+                    </p>
+                    <button onclick="showPage('detail-main')"
+                        class="bg-detailsBtn hover:bg-primary text-white font-semibold py-4 px-10 rounded-full transition-colors duration-300 shadow-xl shadow-detailsBtn/40 flex items-center gap-3 text-lg group-hover:scale-105 transform mt-4">
+                        <i class="fas fa-fire"></i>
+                        <span class="lang-en">Discover Preparation</span>
+                        <span class="lang-mm">ပြုလုပ်နည်း အသေးစိတ်ကြည့်ရန်</span>
+                    </button>
+                </div>
+            </section>
+
+        </main>
+
+        <!-- Footer -->
+        <footer class="bg-black/50 py-8 text-center text-gray-500 border-t border-gray-800">
+            <p class="font-serif italic">
+                <span class="lang-en">"Cooking is like love. It should be entered into with abandon or not at
+                    all."</span>
+                <span class="lang-mm">"ဟင်းချက်ခြင်းသည် ချစ်ခြင်းမေတ္တာနှင့် တူသည်။ အကြွင်းမဲ့
+                    နှစ်မြှုပ်လုပ်ဆောင်သင့်သည်။"</span>
+            </p>
+            <p class="mt-2 text-sm">Culinary Presentation UI © 2024</p>
+        </footer>
+    </div>
+
+    <!-- Detail Pages -->
+
+    <!-- Detail Page: PROFILE -->
+    <div id="detail-profile"
+        class="detail-page hidden min-h-screen pt-32 pb-20 px-6 md:px-12 max-w-5xl mx-auto fade-in">
+        <button onclick="showMain()"
+            class="group mb-8 text-secondary hover:text-primary transition-colors flex items-center gap-2 font-semibold text-lg focus:outline-none">
+            <i class="fas fa-arrow-left transform group-hover:-translate-x-2 transition-transform duration-300"></i>
+            <span class="lang-en">Back to Menu</span>
+            <span class="lang-mm">ပင်မ မီနူးသို့ ပြန်သွားရန်</span>
+        </button>
+
+        <div
+            class="bg-[#2A2A2A] p-8 md:p-16 rounded-3xl border border-gray-700 shadow-2xl relative overflow-hidden flex flex-col md:flex-row gap-10 md:gap-16 items-center md:items-start">
+            <div
+                class="absolute top-0 right-0 w-64 h-64 bg-primary opacity-5 rounded-full -mr-20 -mt-20 pointer-events-none">
+            </div>
+
+            <!-- Expanding Profile Photo -->
+            <div class="w-48 h-48 md:w-72 md:h-72 shrink-0 relative expand-profile-anim">
+                <img src="image/dreamina-2026-05-15-1205-This is my face reference, outfit refere.jpg"
+                    alt="Profile Picture"
+                    class="w-full h-full object-cover rounded-full border-4 border-secondary shadow-[0_0_30px_rgba(242,169,0,0.4)]">
+            </div>
+
+            <!-- Text Details -->
+            <div class="w-full text-center md:text-left space-y-6 flex-1 fade-in-delayed">
+                <div>
+                    <div
+                        class="inline-block px-4 py-1.5 bg-secondary/20 text-secondary text-sm font-semibold tracking-widest uppercase rounded-full mb-3">
+                        <span class="lang-en">Culinary Presenter</span>
+                        <span class="lang-mm">ဟင်းပွဲတင်ဆက်သူ</span>
+                    </div>
+                    <h3 class="text-4xl md:text-5xl font-serif font-bold text-white mb-2">
+                        <span class="lang-en">Htet Myat Oo</span>
+                        <span class="lang-mm">ထက်မြတ်ဦး</span>
+                    </h3>
+                </div>
+
+                <div
+                    class="grid grid-cols-1 sm:grid-cols-2 gap-y-6 gap-x-8 text-gray-300 mt-8 pt-6 border-t border-gray-700/50 text-left">
+                    <!-- Student ID -->
+                    <div class="flex items-center gap-4 justify-center md:justify-start">
+                        <div
+                            class="w-12 h-12 shrink-0 rounded-full bg-gray-800 flex items-center justify-center text-primary text-xl shadow-inner">
+                            <i class="fas fa-id-badge"></i>
+                        </div>
+                        <div>
+                            <span class="text-xs text-gray-500 uppercase tracking-wider block"><span
+                                    class="lang-en">Student ID</span><span class="lang-mm">ကျောင်းသားအမှတ်</span></span>
+                            <span class="font-semibold text-white text-lg">CUL-2026-001</span>
+                        </div>
+                    </div>
+                    <!-- Class -->
+                    <div class="flex items-center gap-4 justify-center md:justify-start">
+                        <div
+                            class="w-12 h-12 shrink-0 rounded-full bg-gray-800 flex items-center justify-center text-primary text-xl shadow-inner">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+                        <div>
+                            <span class="text-xs text-gray-500 uppercase tracking-wider block"><span
+                                    class="lang-en">Class</span><span class="lang-mm">အတန်း</span></span>
+                            <span class="font-semibold text-white text-lg"><span class="lang-en">Diploma InCulinary
+                                    Arts</span><span class="lang-mm">ဒီပလိုမ အဆင့်မြင့် ဟင်းချက်ပညာ</span></span>
+                        </div>
+                    </div>
+                    <!-- Batch -->
+                    <div class="flex items-center gap-4 justify-center md:justify-start">
+                        <div
+                            class="w-12 h-12 shrink-0 rounded-full bg-gray-800 flex items-center justify-center text-primary text-xl shadow-inner">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div>
+                            <span class="text-xs text-gray-500 uppercase tracking-wider block"><span
+                                    class="lang-en">Batch</span><span class="lang-mm">အပတ်စဉ်</span></span>
+                            <span class="font-semibold text-white text-lg"><span class="lang-en">Batch 23</span><span
+                                    class="lang-mm">အပတ်စဉ် ၂၃</span></span>
+                        </div>
+                    </div>
+                    <!-- Date of Birth -->
+                    <div class="flex items-center gap-4 justify-center md:justify-start">
+                        <div
+                            class="w-12 h-12 shrink-0 rounded-full bg-gray-800 flex items-center justify-center text-primary text-xl shadow-inner">
+                            <i class="fas fa-calendar-day"></i>
+                        </div>
+                        <div>
+                            <span class="text-xs text-gray-500 uppercase tracking-wider block"><span
+                                    class="lang-en">Date of Birth</span><span class="lang-mm">မွေးသက္ကရာဇ်</span></span>
+                            <span class="font-semibold text-white text-lg">5 Nov 2005</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Ambition / Vision Section -->
+                <div class="mt-8 pt-8 border-t border-gray-700/50 text-left">
+                    <div
+                        class="bg-gradient-to-r from-primary/10 to-transparent p-6 rounded-2xl border-l-4 border-primary">
+                        <h4 class="text-xl font-bold text-white mb-3 flex items-center gap-3">
+                            <i class="fas fa-star text-secondary text-2xl"></i>
+                            <span class="lang-en">Culinary Vision & Ambition</span>
+                            <span class="lang-mm">ဟင်းချက်ပညာဆိုင်ရာ ရည်မှန်းချက်</span>
+                        </h4>
+                        <p class="text-gray-300 text-base leading-relaxed italic border-l-2 border-gray-600 pl-4 ml-2">
+                            <span class="lang-en">"My culinary vision is to bridge the gap between our rich traditional
+                                heritage and modern culinary arts. Through my journey, I aim to create meaningful dining
+                                experiences, sharing my passion for food through plates that leave a lasting
+                                impression."</span>
+                            <span class="lang-mm">"အချက်အပြုတ်ပညာကို လေ့လာနေတဲ့ ကျောင်းသားတစ်ယောက်အနေနဲ့
+                                ရိုးရာဟင်းချက်နည်းပညာတွေကို ခေတ်ရေစီးကြောင်းနဲ့အညီ ဆန်းသစ်တီထွင်သွားချင်ပါတယ်။ အနာဂတ်မှာ
+                                စားသုံးသူတွေအတွက် မေ့မရနိုင်တဲ့ အရသာတွေ၊ အတွေ့အကြုံကောင်းတွေ ဖန်တီးပေးရင်း
+                                အချက်အပြုတ်အနုပညာနဲ့ အောင်မြင်တဲ့သူတစ်ယောက်ဖြစ်လာဖို့ ကျွန်တော့် အကြီးမားဆုံး
+                                အိပ်မက်ပဲဖြစ်ပါတယ်။"</span>
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Detail Page: SOUP -->
+    <div id="detail-soup" class="detail-page hidden min-h-screen pt-32 pb-20 px-6 md:px-12 max-w-5xl mx-auto fade-in">
+        <button onclick="showMain()"
+            class="group mb-8 text-secondary hover:text-primary transition-colors flex items-center gap-2 font-semibold text-lg focus:outline-none">
+            <i class="fas fa-arrow-left transform group-hover:-translate-x-2 transition-transform duration-300"></i>
+            <span class="lang-en">Back to Menu</span>
+            <span class="lang-mm">ပင်မ မီနူးသို့ ပြန်သွားရန်</span>
+        </button>
+
+        <div class="bg-[#2A2A2A] p-6 md:p-12 rounded-2xl border border-gray-700 shadow-2xl space-y-10">
+            <h2 class="text-4xl md:text-5xl font-serif font-bold text-white mb-4 border-b border-gray-700 pb-6">
+                <span class="lang-en">Wild Mushroom & Truffle Velouté</span>
+                <span class="lang-mm">တောမှို နှင့် ထရက်ဖယ်လ်ဆီမွှေး ဟင်းချိုအနှစ်</span>
+            </h2>
+
+            <!-- History & Origin (With Image) -->
+            <div
+                class="bg-gradient-to-r from-[#1f1a10] to-[#2A2A2A] rounded-xl border-l-4 border-secondary shadow-lg relative overflow-hidden flex flex-col md:flex-row">
+                <div
+                    class="absolute top-0 right-0 w-32 h-32 bg-secondary opacity-5 rounded-full -mr-10 -mt-10 pointer-events-none">
+                </div>
+                <div class="p-6 md:p-8 md:w-2/3">
+                    <h3 class="text-2xl font-serif font-bold text-secondary mb-4 flex items-center gap-3">
+                        <i class="fas fa-scroll text-xl"></i>
+                        <span class="lang-en">Culinary Heritage & Origin</span>
+                        <span class="lang-mm">ဟင်းပွဲရာဇဝင် နှင့် မူလဇာစ်မြစ်</span>
+                    </h3>
+                    <p class="text-gray-300 leading-relaxed text-base">
+                        <span class="lang-en"><strong>Origin: France.</strong> The Velouté is one of the five "mother
+                            sauces" of French cuisine, codified by Auguste Escoffier in the early 20th century. Its
+                            roots date back to the 19th-century culinary revolution. The addition of wild mushrooms and
+                            truffles transformed this humble base into a dish favored by royalty, particularly hailing
+                            from the regions of Périgord and Burgundy where foraging for truffles is an ancient, revered
+                            tradition.</span>
+                        <span class="lang-mm"><strong>မူလဇာစ်မြစ်: ပြင်သစ်နိုင်ငံ။</strong> ဗလူးတေး (Velouté)
+                            ဟင်းရည်အနှစ်သည် ပြင်သစ်ဟင်းအနှစ် (Mother Sauces) ၅ မျိုးထဲမှ တစ်မျိုးဖြစ်ပြီး၊ ၂၀
+                            ရာစုအစောပိုင်းတွင် နာမည်ကြီးစားဖိုမှူး Auguste Escoffier မှ စနစ်တကျ မှတ်တမ်းတင်ခဲ့ပါသည်။
+                            သာမန်ဟင်းရည်အနှစ်မှတဆင့် တောမှိုများနှင့် ရှားပါး ထရက်ဖယ်လ် (Truffle) ကို
+                            ပေါင်းစပ်လိုက်သောအခါ ပြင်သစ်ဆွေမျိုးတော်စပ်များ အထူးနှစ်သက်သော ဟင်းပွဲဖြစ်လာခဲ့သည်။
+                            အထူးသဖြင့် ထရက်ဖယ်လ်ရှာဖွေခြင်း အစဉ်အလာကြီးမားသော Périgord နှင့် Burgundy ဒေသများမှ
+                            ဆင်းသက်လာခြင်းဖြစ်သည်။</span>
+                    </p>
+                </div>
+                <div class="md:w-1/3 min-h-[200px] max-h-[300px]">
+                    <img src="image/ChatGPT Image May 15, 2026, 04_32_58 PM.png" alt="Truffle and Mushrooms"
+                        class="w-full h-full object-cover">
+                </div>
+            </div>
+
+            <!-- SOMMELIER & CHEF'S NOTES -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Wine Pairing -->
+                <div
+                    class="group relative bg-black/30 border border-gray-700/50 rounded-2xl flex flex-col items-center text-center overflow-hidden cursor-pointer shadow-lg hover:shadow-2xl transition-all duration-300">
+                    <div class="absolute inset-0 w-full h-full">
+                        <img src="https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?auto=format&fit=crop&q=80&w=600"
+                            alt="Wine Pairing"
+                            class="w-full h-full object-cover opacity-20 group-hover:opacity-40 group-hover:scale-110 transition-all duration-700 ease-in-out">
+                        <div
+                            class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent group-hover:via-black/30 transition-all duration-500">
+                        </div>
+                    </div>
+                    <div class="relative z-10 p-6 flex flex-col items-center w-full h-full">
+                        <div
+                            class="w-14 h-14 bg-secondary/10 text-secondary rounded-full flex items-center justify-center text-2xl mb-4 group-hover:bg-secondary group-hover:text-black transition-colors duration-300">
+                            <i class="fas fa-wine-glass-alt"></i>
+                        </div>
+                        <h4
+                            class="text-lg font-bold text-white mb-2 group-hover:text-secondary transition-colors duration-300">
+                            <span class="lang-en">Sommelier's Wine Pairing</span>
+                            <span class="lang-mm">ဝိုင်တွဲဖက်မှု အကြံပြုချက်</span>
+                        </h4>
+                        <p class="text-gray-300 text-sm mt-auto">
+                            <span class="lang-en"><strong>Pinot Noir</strong> or an oak-aged
+                                <strong>Chardonnay</strong>. The wine's acidity cuts through the soup's richness, while
+                                its earthy tones complement the wild mushrooms.</span>
+                            <span class="lang-mm"><strong>Pinot Noir (ဝိုင်နီ)</strong> သို့မဟုတ် <strong>Chardonnay
+                                    (ဝိုင်ဖြူ)</strong>။ ဟင်းချို၏ဆီမွှေးနှင့် ခရင်မ်အနှစ်များကို ဝိုင်၏
+                                ချဉ်ပြုံးပြုံးအရသာက ပိုမိုပေါ့ပါးလန်းဆန်းစေပြီး တောမှိုနံ့ကို ပိုမိုပီသစေပါသည်။</span>
+                        </p>
+                    </div>
+                </div>
+                <!-- Allergen Info -->
+                <div
+                    class="group relative bg-black/30 border border-gray-700/50 rounded-2xl flex flex-col items-center text-center overflow-hidden cursor-pointer shadow-lg hover:shadow-2xl transition-all duration-300">
+                    <div class="absolute inset-0 w-full h-full">
+                        <img src="https://images.unsplash.com/photo-1498837167922-ddd27525d352?auto=format&fit=crop&q=80&w=600"
+                            alt="Dietary"
+                            class="w-full h-full object-cover opacity-20 group-hover:opacity-40 group-hover:scale-110 transition-all duration-700 ease-in-out">
+                        <div
+                            class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent group-hover:via-black/30 transition-all duration-500">
+                        </div>
+                    </div>
+                    <div class="relative z-10 p-6 flex flex-col items-center w-full h-full">
+                        <div
+                            class="w-14 h-14 bg-primary/10 text-primary rounded-full flex items-center justify-center text-2xl mb-4 group-hover:bg-primary group-hover:text-black transition-colors duration-300">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <h4
+                            class="text-lg font-bold text-white mb-2 group-hover:text-primary transition-colors duration-300">
+                            <span class="lang-en">Dietary & Allergens</span>
+                            <span class="lang-mm">ဓာတ်မတည့်မှု အချက်အလက်</span>
+                        </h4>
+                        <div class="flex flex-wrap gap-2 justify-center mb-2">
+                            <span
+                                class="px-2 py-0.5 bg-green-900/60 text-green-300 border border-green-700/50 text-xs rounded-full font-semibold">Vegetarian</span>
+                            <span
+                                class="px-2 py-0.5 bg-yellow-900/60 text-yellow-300 border border-yellow-700/50 text-xs rounded-full font-semibold">Gluten-Free</span>
+                        </div>
+                        <p class="text-gray-300 text-sm mt-auto">
+                            <span class="lang-en">Contains <strong>Dairy</strong> (Butter, Cream). Can be made vegan by
+                                substituting butter with olive oil and cream with coconut/oat cream.</span>
+                            <span class="lang-mm"><strong>နို့ထွက်ပစ္စည်း</strong> (ထောပတ်နှင့် ခရင်မ်) ပါဝင်သည်။
+                                သတ်သတ်လွတ်သမားများအတွက် သံလွင်ဆီနှင့် အုန်းနို့ခရင်မ်တို့ဖြင့်
+                                အစားထိုးနိုင်ပါသည်။</span>
+                        </p>
+                    </div>
+                </div>
+                <!-- Plating Aesthetics -->
+                <div
+                    class="group relative bg-black/30 border border-gray-700/50 rounded-2xl flex flex-col items-center text-center overflow-hidden cursor-pointer shadow-lg hover:shadow-2xl transition-all duration-300">
+                    <div class="absolute inset-0 w-full h-full">
+                        <img src="mulzo/5.png" alt="Plating"
+                            class="w-full h-full object-cover opacity-20 group-hover:opacity-40 group-hover:scale-110 transition-all duration-700 ease-in-out">
+                        <div
+                            class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent group-hover:via-black/30 transition-all duration-500">
+                        </div>
+                    </div>
+                    <div class="relative z-10 p-6 flex flex-col items-center w-full h-full">
+                        <div
+                            class="w-14 h-14 bg-blue-500/10 text-blue-400 rounded-full flex items-center justify-center text-2xl mb-4 group-hover:bg-blue-500 group-hover:text-black transition-colors duration-300">
+                            <i class="fas fa-palette"></i>
+                        </div>
+                        <h4
+                            class="text-lg font-bold text-white mb-2 group-hover:text-blue-400 transition-colors duration-300">
+                            <span class="lang-en">Plating & Presentation</span>
+                            <span class="lang-mm">ပန်းကန်ပြင်ဆင်ပုံအလှ</span>
+                        </h4>
+                        <p class="text-gray-300 text-sm mt-auto">
+                            <span class="lang-en">Serve in a warm, shallow white bowl. Drizzle Truffle oil in a
+                                concentric spiral, and garnish with micro-herbs or dehydrated mushroom powder.</span>
+                            <span class="lang-mm">ခပ်နွေးနွေး အဖြူရောင်ပန်းကန်လုံးအပြားတွင် ထည့်ပါ။ ထရက်ဖယ်လ်ဆီကို
+                                စက်ဝိုင်းပုံစံ ဆမ်းပြီး အပေါ်မှ ပင်စိမ်းညှောက်လေးများ သို့မဟုတ် မှိုမှုန့်လေးများ
+                                ဖြူးပါ။</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ONE GRID FLOW: SECRETS, INGREDIENTS, EXECUTION -->
+            <div class="space-y-12">
+                <!-- Broth Secrets / Pre-Prep (With Image) -->
+                <div
+                    class="bg-secondary/10 rounded-xl border-l-4 border-secondary overflow-hidden shadow-lg group cursor-pointer">
+                    <div class="overflow-hidden h-48 relative">
+                        <img src="image/potato.png" alt="Cooking Mushrooms"
+                            class="w-full h-full object-cover opacity-70 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+                        <h4 class="absolute bottom-4 left-4 text-xl font-bold text-white flex items-center gap-2">
+                            <i class="fas fa-lightbulb text-secondary"></i>
+                            <span class="lang-en">The Umami Boost (Chef's Secret)</span>
+                            <span class="lang-mm">ဟင်းချက်ဆရာ၏ လျှို့ဝှက်ချက်</span>
+                        </h4>
+                    </div>
+                    <div class="p-6">
+                        <p class="text-gray-300 leading-relaxed">
+                            <span class="lang-en"><strong>Mushroom Roasting:</strong> Never wash mushrooms with water;
+                                brush them clean instead. Dry-roast the mushrooms in a hot pan <em>before</em> adding
+                                any butter or oil. This deeply concentrates their earthy, umami flavors and prevents
+                                them from becoming soggy.</span>
+                            <span class="lang-mm"><strong>မှိုများကို လှော်ခြင်း:</strong> မှိုများကို
+                                ရေဖြင့်လုံးဝမဆေးဘဲ စုတ်တံဖြင့်သာ ဖုန်ခါပါ။ ဆီ သို့မဟုတ် ထောပတ် မထည့်မီ ဒယ်အိုးပူပူတွင်
+                                မှိုများကို <em>အရင်ဆုံး အခြောက်လှော်ပေးခြင်း</em>ဖြင့် မှို၏ သဘာဝအချိုဓာတ် (Umami) ကို
+                                အမြင့်ဆုံးအထိ ဆွဲထုတ်နိုင်ပြီး မှိုများ ရေမထွက်စေရန် ကာကွယ်ပေးပါသည်။</span>
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Ingredients Section (Full Width Card) -->
+                <div class="bg-black/30 p-6 md:p-8 rounded-2xl border border-gray-700/50 shadow-xl">
+                    <h3
+                        class="text-2xl font-bold text-primary mb-6 flex items-center gap-3 border-b border-gray-800 pb-3">
+                        <i class="fas fa-clipboard-list"></i>
+                        <span class="lang-en">Ingredients</span>
+                        <span class="lang-mm">ပါဝင်ပစ္စည်းများ</span>
+                    </h3>
+                    <ul class="ingredient-list text-gray-300 text-lg grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <li>
+                            <span class="lang-en">Mixed Wild Mushrooms (Cremini, Shiitake, Porcini) - 400g</span>
+                            <span class="lang-mm">တောမှိုအမျိုးမျိုး (Cremini, Shiitake, Porcini) - ၄၀၀ ဂရမ်</span>
+                        </li>
+                        <li>
+                            <span class="lang-en">Shallot (large) - 1 pc, Garlic - 2 cloves (minced)</span>
+                            <span class="lang-mm">ကြက်သွန်နီကလေး - ၁ လုံး၊ ကြက်သွန်ဖြူ - ၂ မြွှာ (စင်းထားပါ)</span>
+                        </li>
+                        <li>
+                            <span class="lang-en">Fresh Thyme - 2 sprigs</span>
+                            <span class="lang-mm">လတ်ဆတ်သော စမုန်ဖြူ (Thyme) ရွက် - ၂ ပင်</span>
+                        </li>
+                        <li>
+                            <span class="lang-en">Dry White Wine - 1/4 cup</span>
+                            <span class="lang-mm">ဝိုင်ဖြူ - ၁/၄ ခွက်</span>
+                        </li>
+                        <li>
+                            <span class="lang-en">Chicken or Vegetable Stock - 3 cups</span>
+                            <span class="lang-mm">ကြက်သား (သို့) ဟင်းသီးဟင်းရွက် ပြုတ်ရည် - ၃ ခွက်</span>
+                        </li>
+                        <li>
+                            <span class="lang-en">Heavy Cream - 1/2 cup</span>
+                            <span class="lang-mm">ဟဲဗီးခရင်မ် (Heavy Cream) - ၁/၂ ခွက်</span>
+                        </li>
+                        <li>
+                            <span class="lang-en">White Truffle Oil - As needed (for garnish)</span>
+                            <span class="lang-mm">ထရက်ဖယ်လ် ဆီမွှေးအဖြူ (White Truffle Oil) - အနည်းငယ်</span>
+                        </li>
+                        <li>
+                            <span class="lang-en">Butter - 2 tbsp, Salt & Black Pepper - To taste</span>
+                            <span class="lang-mm">ထောပတ် - ၂ စားပွဲတင်ဇွန်း၊ ဆား နှင့် ငရုတ်ကောင်းမည်း -
+                                လိုသလောက်</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Cooking Execution (One-Grid Timeline with Images) -->
+                <div class="bg-black/30 p-6 md:p-8 rounded-2xl border border-gray-700/50 shadow-xl space-y-8">
+                    <h3
+                        class="text-2xl font-bold text-primary mb-2 flex items-center gap-3 border-b border-gray-800 pb-3">
+                        <i class="fas fa-fire-burner"></i>
+                        <span class="lang-en">Cooking Execution</span>
+                        <span class="lang-mm">ချက်ပြုတ်ခြင်း အဆင့်ဆင့်</span>
+                    </h3>
+                    <div class="space-y-6">
+                        <!-- Step 1 -->
+                        <div
+                            class="flex flex-col md:flex-row gap-6 items-start bg-black/20 p-5 rounded-xl border border-gray-850 hover:border-gray-700 transition-colors">
+                            <div
+                                class="flex-shrink-0 w-12 h-12 rounded-full bg-secondary text-black font-bold flex items-center justify-center text-xl shadow-lg">
+                                1</div>
+                            <div class="w-full md:w-44 h-44 md:h-28 rounded-lg overflow-hidden shrink-0 shadow-md">
+                                <img src="mulzo/1.png" alt="Dry Roast" class="w-full h-full object-cover">
+                            </div>
+                            <div class="flex-1 space-y-2">
+                                <h4 class="text-white font-bold text-lg">
+                                    <span class="lang-en">Dry Roast</span>
+                                    <span class="lang-mm">အခြောက်လှော်ခြင်း</span>
+                                </h4>
+                                <p class="text-gray-300 text-base leading-relaxed">
+                                    <span class="lang-en">Heat a heavy-bottomed pot. Add the cleaned, sliced mushrooms
+                                        and dry-roast them for 5-7 minutes until they release their moisture and start
+                                        to brown.</span>
+                                    <span class="lang-mm">အိုးအထူတစ်လုံးကို အပူပေးပါ။ လှီးထားသော မှိုများကိုထည့်ပြီး
+                                        ရေခန်းကာ အညိုရောင်သန်းလာသည်အထိ ၅ မိနစ်မှ ၇ မိနစ်ခန့် အခြောက်လှော်ပါ။</span>
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Step 2 -->
+                        <div
+                            class="flex flex-col md:flex-row gap-6 items-start bg-black/20 p-5 rounded-xl border border-gray-850 hover:border-gray-700 transition-colors">
+                            <div
+                                class="flex-shrink-0 w-12 h-12 rounded-full bg-secondary text-black font-bold flex items-center justify-center text-xl shadow-lg">
+                                2</div>
+                            <div class="w-full md:w-44 h-44 md:h-28 rounded-lg overflow-hidden shrink-0 shadow-md">
+                                <img src="mulzo/2.png" alt="Caramelize Aromatics" class="w-full h-full object-cover">
+                            </div>
+                            <div class="flex-1 space-y-2">
+                                <h4 class="text-white font-bold text-lg">
+                                    <span class="lang-en">Caramelize Aromatics</span>
+                                    <span class="lang-mm">အမွှေးအကြိုင်များ ဆီသတ်ခြင်း</span>
+                                </h4>
+                                <p class="text-gray-300 text-base leading-relaxed">
+                                    <span class="lang-en">Add the butter to the mushrooms, followed by the minced
+                                        shallots, garlic, and fresh thyme. Sauté until the shallots are soft and
+                                        translucent.</span>
+                                    <span class="lang-mm">မှိုအိုးထဲသို့ ထောပတ်ထည့်ပါ။ ထို့နောက် စင်းထားသော ကြက်သွန်နီ၊
+                                        ကြက်သွန်ဖြူ နှင့် စမုန်ဖြူရွက် (Thyme) ကို ထည့်ပါ။ ကြက်သွန်များ နွမ်းသည်အထိ
+                                        ဆီသတ်ပါ။</span>
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Step 3 -->
+                        <div
+                            class="flex flex-col md:flex-row gap-6 items-start bg-black/20 p-5 rounded-xl border border-gray-850 hover:border-gray-700 transition-colors">
+                            <div
+                                class="flex-shrink-0 w-12 h-12 rounded-full bg-secondary text-black font-bold flex items-center justify-center text-xl shadow-lg">
+                                3</div>
+                            <div class="w-full md:w-44 h-44 md:h-28 rounded-lg overflow-hidden shrink-0 shadow-md">
+                                <img src="mulzo/3.png" alt="Deglaze" class="w-full h-full object-cover">
+                            </div>
+                            <div class="flex-1 space-y-2">
+                                <h4 class="text-white font-bold text-lg">
+                                    <span class="lang-en">Deglaze</span>
+                                    <span class="lang-mm">ဝိုင်ဖြင့် အရသာယူခြင်း</span>
+                                </h4>
+                                <p class="text-gray-300 text-base leading-relaxed">
+                                    <span class="lang-en">Pour in the dry white wine. Scrape up any browned bits from
+                                        the bottom of the pot. Let the wine simmer until it has almost entirely
+                                        evaporated.</span>
+                                    <span class="lang-mm">ဝိုင်ဖြူလောင်းထည့်ပြီး အိုးအောက်ခြေတွင် ကပ်နေသော အနှစ်များကို
+                                        ခြစ်ယူပါ။ ဝိုင်များ နီးပါးခမ်းသွားသည်အထိ တည်ပါ။</span>
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Step 4 -->
+                        <div
+                            class="flex flex-col md:flex-row gap-6 items-start bg-black/20 p-5 rounded-xl border border-gray-850 hover:border-gray-700 transition-colors">
+                            <div
+                                class="flex-shrink-0 w-12 h-12 rounded-full bg-secondary text-black font-bold flex items-center justify-center text-xl shadow-lg">
+                                4</div>
+                            <div class="w-full md:w-44 h-44 md:h-28 rounded-lg overflow-hidden shrink-0 shadow-md">
+                                <img src="mulzo/4.png" alt="Simmer & Blend" class="w-full h-full object-cover">
+                            </div>
+                            <div class="flex-1 space-y-2">
+                                <h4 class="text-white font-bold text-lg">
+                                    <span class="lang-en">Simmer & Blend</span>
+                                    <span class="lang-mm">ပြုတ်ခြင်းနှင့် ကြိတ်ချေခြင်း</span>
+                                </h4>
+                                <p class="text-gray-300 text-base leading-relaxed">
+                                    <span class="lang-en">Pour in the stock. Bring to a boil, then lower the heat and
+                                        simmer for 20 minutes. Remove the thyme sprigs. Use a blender to purée the soup
+                                        until silky smooth.</span>
+                                    <span class="lang-mm">ပြုတ်ရည်ထည့်ပြီး ဆူလာလျှင် မီးလျှော့ကာ မိနစ် ၂၀ ခန့် ပြုတ်ပါ။
+                                        စမုန်ဖြူရွက်များကို ဖယ်ထုတ်ပါ။ ဟင်းချိုကို ကတ္တီပါသားကဲ့သို့ နူးညံ့သွားသည်အထိ
+                                        စက်ဖြင့် သေချာစွာ ကြိတ်ချေပါ။</span>
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Step 5 -->
+                        <div
+                            class="flex flex-col md:flex-row gap-6 items-start bg-black/20 p-5 rounded-xl border border-gray-850 hover:border-gray-700 transition-colors">
+                            <div
+                                class="flex-shrink-0 w-12 h-12 rounded-full bg-secondary text-black font-bold flex items-center justify-center text-xl shadow-lg">
+                                5</div>
+                            <div class="w-full md:w-44 h-44 md:h-28 rounded-lg overflow-hidden shrink-0 shadow-md">
+                                <img src="mulzo/5.png" alt="Finish" class="w-full h-full object-cover">
+                            </div>
+                            <div class="flex-1 space-y-2">
+                                <h4 class="text-white font-bold text-lg">
+                                    <span class="lang-en">Finish</span>
+                                    <span class="lang-mm">အချောသတ်ခြင်း</span>
+                                </h4>
+                                <p class="text-gray-300 text-base leading-relaxed">
+                                    <span class="lang-en">Stir in the heavy cream and gently warm it through. Season
+                                        with salt and pepper. Let it simmer briefly, then ladle into bowls and finish
+                                        with a delicate drizzle of white truffle oil.</span>
+                                    <span class="lang-mm">ခရင်မ်ထည့်ပြီး ခပ်နွေးနွေးလေးဖြစ်အောင် ပြန်နွှေးပါ။ ဆား၊
+                                        ငရုတ်ကောင်းဖြင့် အရသာသွင်းပါ။ ပန်းကန်လုံးထဲထည့်ပြီး ထရက်ဖယ်လ်ဆီမွှေး (Truffle
+                                        Oil) အနည်းငယ်ဆမ်းကာ တည်ခင်းပါ။</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+        </div>
+    </div>
+
+    <!-- Detail Page: SALAD -->
+    <div id="detail-salad" class="detail-page hidden min-h-screen pt-32 pb-20 px-6 md:px-12 max-w-5xl mx-auto fade-in">
+        <button onclick="showMain()"
+            class="group mb-8 text-secondary hover:text-primary transition-colors flex items-center gap-2 font-semibold text-lg focus:outline-none">
+            <i class="fas fa-arrow-left transform group-hover:-translate-x-2 transition-transform duration-300"></i>
+            <span class="lang-en">Back to Menu</span>
+            <span class="lang-mm">ပင်မ မီနူးသို့ ပြန်သွားရန်</span>
+        </button>
+
+        <div class="bg-[#2A2A2A] p-6 md:p-12 rounded-2xl border border-gray-700 shadow-2xl space-y-10">
+            <h2 class="text-4xl md:text-5xl font-serif font-bold text-white mb-4 border-b border-gray-700 pb-6">
+                <span class="lang-en">Heirloom Tomato & Artisanal Burrata Salad</span>
+                <span class="lang-mm">ရောင်စုံခရမ်းချဉ်သီး နှင့် ဘူရာတာဒိန်ခဲသုပ်</span>
+            </h2>
+
+            <!-- History & Origin (With Image) -->
+            <div
+                class="bg-gradient-to-r from-[#1f1a10] to-[#2A2A2A] rounded-xl border-l-4 border-secondary shadow-lg relative overflow-hidden flex flex-col md:flex-row">
+                <div
+                    class="absolute top-0 right-0 w-32 h-32 bg-secondary opacity-5 rounded-full -mr-10 -mt-10 pointer-events-none">
+                </div>
+                <div class="p-6 md:p-8 md:w-2/3">
+                    <h3 class="text-2xl font-serif font-bold text-secondary mb-4 flex items-center gap-3">
+                        <i class="fas fa-scroll text-xl"></i>
+                        <span class="lang-en">Culinary Heritage & Origin</span>
+                        <span class="lang-mm">ဟင်းပွဲရာဇဝင် နှင့် မူလဇာစ်မြစ်</span>
+                    </h3>
+                    <p class="text-gray-300 leading-relaxed text-base">
+                        <span class="lang-en"><strong>Origin: Puglia, Southern Italy (1920s).</strong> Burrata, meaning
+                            "buttered" in Italian, was created in the Apulia region as a clever way to minimize food
+                            waste. Cheesemakers would take leftover mozzarella curds, mix them with fresh cream, and
+                            wrap them inside a pouch made of mozzarella. Paired with sweet, ancient varieties of
+                            "heirloom" tomatoes and balsamic vinegar from Modena, this dish represents the pinnacle of
+                            Italian simplicity—where the quality of ingredients speaks louder than complex cooking
+                            techniques.</span>
+                        <span class="lang-mm"><strong>မူလဇာစ်မြစ်: အီတလီနိုင်ငံတောင်ပိုင်း ပူလီယာ (Puglia) ဒေသ (၁၉၂၀
+                                ပြည့်လွန်နှစ်များ)။</strong> အီတလီဘာသာဖြင့် "ထောပတ်ကဲ့သို့ နူးညံ့သော" ဟု အဓိပ္ပာယ်ရသည့်
+                            Burrata ဒိန်ခဲကို အစားအစာ လေလွင့်မှုနည်းပါးစေရန် စတင်တီထွင်ခဲ့ကြသည်။ Mozzarella
+                            ဒိန်ခဲလုပ်ရာမှ ပိုကျန်သော အစအနများကို ခရင်မ် (Cream) လတ်လတ်ဆတ်ဆတ်နှင့် ရောနယ်ကာ၊ Mozzarella
+                            အလွှာပါးလေးဖြင့် ပြန်ထုပ်ထားခြင်းဖြစ်သည်။ ရှေးဟောင်းမျိုးရင်းဖြစ်သော
+                            ရောင်စုံခရမ်းချဉ်သီးများ၊ မိုဒီးနား (Modena) ဒေသထွက် ဘော်ဆာမစ်ရှာလကာရည် တို့နှင့်
+                            တွဲဖက်လိုက်သောအခါ ပါဝင်ပစ္စည်းများ၏ လတ်ဆတ်မှုကသာ အဓိကကျကြောင်း ပြသနေသည့် ဂန္ထဝင်
+                            အီတလီဟင်းပွဲ တစ်ပွဲဖြစ်လာပါသည်။</span>
+                    </p>
+                </div>
+                <div class="md:w-1/3 min-h-[200px] max-h-[300px]">
+                    <img src="tomato/poster.png" alt="Puglia Italy" class="w-full h-full object-cover">
+                </div>
+            </div>
+
+            <!-- SOMMELIER & CHEF'S NOTES -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Wine Pairing -->
+                <div
+                    class="group relative bg-black/30 border border-gray-700/50 rounded-2xl flex flex-col items-center text-center overflow-hidden cursor-pointer shadow-lg hover:shadow-2xl transition-all duration-300">
+                    <div class="absolute inset-0 w-full h-full">
+                        <img src="https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?auto=format&fit=crop&q=80&w=600"
+                            alt="Wine Pairing"
+                            class="w-full h-full object-cover opacity-20 group-hover:opacity-40 group-hover:scale-110 transition-all duration-700 ease-in-out">
+                        <div
+                            class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent group-hover:via-black/30 transition-all duration-500">
+                        </div>
+                    </div>
+                    <div class="relative z-10 p-6 flex flex-col items-center w-full h-full">
+                        <div
+                            class="w-14 h-14 bg-secondary/10 text-secondary rounded-full flex items-center justify-center text-2xl mb-4 group-hover:bg-secondary group-hover:text-black transition-colors duration-300">
+                            <i class="fas fa-wine-glass-alt"></i>
+                        </div>
+                        <h4
+                            class="text-lg font-bold text-white mb-2 group-hover:text-secondary transition-colors duration-300">
+                            <span class="lang-en">Sommelier's Wine Pairing</span>
+                            <span class="lang-mm">ဝိုင်တွဲဖက်မှု အကြံပြုချက်</span>
+                        </h4>
+                        <p class="text-gray-300 text-sm mt-auto">
+                            <span class="lang-en"><strong>Sauvignon Blanc</strong> or a crisp <strong>Pinot
+                                    Grigio</strong>. The high acidity and citrus/herbal notes of these white wines pair
+                                beautifully with the fresh basil and acidic tomatoes.</span>
+                            <span class="lang-mm"><strong>Sauvignon Blanc</strong> သို့မဟုတ် <strong>Pinot Grigio
+                                    (ဝိုင်ဖြူ)</strong>။ ဒီဝိုင်ဖြူများ၏ လန်းဆန်းပြင်းရှသော အသီးအရသာက ခရမ်းချဉ်သီး၏
+                                ချဉ်ဖြုန်းဖြုန်းအရသာနှင့် ပင်စိမ်းဆီမွှေးတို့ကို ကောင်းစွာပံ့ပိုးပေးသည်။</span>
+                        </p>
+                    </div>
+                </div>
+                <!-- Allergen Info -->
+                <div
+                    class="group relative bg-black/30 border border-gray-700/50 rounded-2xl flex flex-col items-center text-center overflow-hidden cursor-pointer shadow-lg hover:shadow-2xl transition-all duration-300">
+                    <div class="absolute inset-0 w-full h-full">
+                        <img src="https://images.unsplash.com/photo-1498837167922-ddd27525d352?auto=format&fit=crop&q=80&w=600"
+                            alt="Dietary"
+                            class="w-full h-full object-cover opacity-20 group-hover:opacity-40 group-hover:scale-110 transition-all duration-700 ease-in-out">
+                        <div
+                            class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent group-hover:via-black/30 transition-all duration-500">
+                        </div>
+                    </div>
+                    <div class="relative z-10 p-6 flex flex-col items-center w-full h-full">
+                        <div
+                            class="w-14 h-14 bg-primary/10 text-primary rounded-full flex items-center justify-center text-2xl mb-4 group-hover:bg-primary group-hover:text-black transition-colors duration-300">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <h4
+                            class="text-lg font-bold text-white mb-2 group-hover:text-primary transition-colors duration-300">
+                            <span class="lang-en">Dietary & Allergens</span>
+                            <span class="lang-mm">ဓာတ်မတည့်မှု အချက်အလက်</span>
+                        </h4>
+                        <div class="flex flex-wrap gap-2 justify-center mb-2">
+                            <span
+                                class="px-2 py-0.5 bg-green-900/60 text-green-300 border border-green-700/50 text-xs rounded-full font-semibold">Vegetarian</span>
+                            <span
+                                class="px-2 py-0.5 bg-yellow-900/60 text-yellow-300 border border-yellow-700/50 text-xs rounded-full font-semibold">Gluten-Free</span>
+                        </div>
+                        <p class="text-gray-300 text-sm mt-auto">
+                            <span class="lang-en">Contains <strong>Dairy</strong> (Burrata cheese). Egg-free and
+                                nut-free. Perfect light, refreshing and healthy dish for summer menus.</span>
+                            <span class="lang-mm"><strong>နို့ထွက်ပစ္စည်း</strong> (ဘူရာတာဒိန်ခဲ) ပါဝင်သည်။ ဥ နှင့်
+                                အခွံမာသီးများ မပါဝင်ပါ။ နွေရာသီမီနူးအတွက် အလွန်ပေါ့ပါးလန်းဆန်းပြီး
+                                ကျန်းမာရေးနှင့်ညီညွတ်သော ဟင်းပွဲဖြစ်သည်။</span>
+                        </p>
+                    </div>
+                </div>
+                <!-- Plating Aesthetics -->
+                <div
+                    class="group relative bg-black/30 border border-gray-700/50 rounded-2xl flex flex-col items-center text-center overflow-hidden cursor-pointer shadow-lg hover:shadow-2xl transition-all duration-300">
+                    <div class="absolute inset-0 w-full h-full">
+                        <img src="tomato/5.png" alt="Plating"
+                            class="w-full h-full object-cover opacity-20 group-hover:opacity-40 group-hover:scale-110 transition-all duration-700 ease-in-out">
+                        <div
+                            class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent group-hover:via-black/30 transition-all duration-500">
+                        </div>
+                    </div>
+                    <div class="relative z-10 p-6 flex flex-col items-center w-full h-full">
+                        <div
+                            class="w-14 h-14 bg-blue-500/10 text-blue-400 rounded-full flex items-center justify-center text-2xl mb-4 group-hover:bg-blue-500 group-hover:text-black transition-colors duration-300">
+                            <i class="fas fa-palette"></i>
+                        </div>
+                        <h4
+                            class="text-lg font-bold text-white mb-2 group-hover:text-blue-400 transition-colors duration-300">
+                            <span class="lang-en">Plating & Presentation</span>
+                            <span class="lang-mm">ပန်းကန်ပြင်ဆင်ပုံအလှ</span>
+                        </h4>
+                        <p class="text-gray-300 text-sm mt-auto">
+                            <span class="lang-en">Arrange tomatoes in a circular wreath. Place Burrata in the center.
+                                Dress with balsamic drizzle in artistic lines and scatter edible micro-basil.</span>
+                            <span class="lang-mm">ခရမ်းချဉ်သီးများကို ပန်းကန်ပေါ်တွင် စက်ဝိုင်းပုံ ပန်းခွေလိုစီပါ။
+                                ဒိန်ခဲကို အလယ်တွင်ထားပြီး Balsamic ရှာလကာရည်အနှစ်ကို အနုပညာဆန်ဆန် မျဉ်းကြောင်းများဆွဲကာ
+                                တန်ဆာဆင်ပါ။</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ONE GRID FLOW -->
+            <div class="space-y-12">
+                <!-- Marinade/Prep specific for salad (With Image) -->
+                <div
+                    class="bg-gray-800 rounded-xl border-l-4 border-primary overflow-hidden shadow-lg group cursor-pointer">
+                    <div class="overflow-hidden h-48 relative">
+                        <img src="tomato/uimai 2.png" alt="Fresh Tomatoes"
+                            class="w-full h-full object-cover opacity-70 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+                        <h4 class="absolute bottom-4 left-4 text-xl font-bold text-white flex items-center gap-2">
+                            <i class="fas fa-temperature-half text-primary"></i>
+                            <span class="lang-en">Tempering & Maceration</span>
+                            <span class="lang-mm">အရေးကြီးသော ကြိုတင်ပြင်ဆင်မှု</span>
+                        </h4>
+                    </div>
+                    <div class="p-6">
+                        <p class="text-gray-300 leading-relaxed">
+                            <span class="lang-en"><strong>The Cheese:</strong> Remove Burrata from the fridge <em>at
+                                    least 30 minutes</em> before serving. If served cold, the creamy inside
+                                (stracciatella) won't flow properly. <br><strong>The Tomatoes:</strong> Lightly salt the
+                                sliced tomatoes 10 minutes prior to plate; this draws out their natural juices and
+                                intensifies the flavor.</span>
+                            <span class="lang-mm"><strong>ဒိန်ခဲ ပြင်ဆင်ခြင်း:</strong> ဘူရာတာ (Burrata) ကို မပြင်ဆင်မီ
+                                ရေခဲသေတ္တာထဲမှ <em>အနည်းဆုံး မိနစ် ၃၀ ကြိုထုတ်ထားပါ။</em> အေးနေပါက အတွင်းမှ
+                                ခရင်မ်အနှစ်များ အရည်ရွှမ်းစွာ စီးကျလာမည်မဟုတ်ပါ။ <br><strong>ခရမ်းချဉ်သီး:</strong>
+                                လှီးထားသော ခရမ်းချဉ်သီးများကို မပြင်ဆင်မီ ၁၀ မိနစ်ခန့်ကြို၍ ဆားအနည်းငယ်ဖြူးထားပေးပါ။
+                                သို့မှသာ ခရမ်းချဉ်သီး၏ သဘာဝအချိုရည်များ ထွက်လာပြီး အရသာပိုလေးနက်စေပါသည်။</span>
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Ingredients Card -->
+                <div class="bg-black/30 p-6 md:p-8 rounded-2xl border border-gray-700/50 shadow-xl">
+                    <h3
+                        class="text-2xl font-bold text-primary mb-6 flex items-center gap-3 border-b border-gray-800 pb-3">
+                        <i class="fas fa-clipboard-list"></i>
+                        <span class="lang-en">Ingredients</span>
+                        <span class="lang-mm">ပါဝင်ပစ္စည်းများ</span>
+                    </h3>
+                    <ul class="ingredient-list text-gray-300 text-lg grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <li>
+                            <span class="lang-en">Fresh Burrata Cheese ball - 1 pc (150g-200g)</span>
+                            <span class="lang-mm">လတ်ဆတ်သော ဘူရာတာ (Burrata) ဒိန်ခဲ - ၁ လုံး (၁၅၀-၂၀၀ ဂရမ်)</span>
+                        </li>
+                        <li>
+                            <span class="lang-en">Heirloom Tomatoes (mixed colors) - 3 to 4 pcs</span>
+                            <span class="lang-mm">ရောင်စုံ သဘာဝခရမ်းချဉ်သီး - ၃ မှ ၄ လုံး</span>
+                        </li>
+                        <li>
+                            <span class="lang-en">Fresh Basil leaves - 1 handful</span>
+                            <span class="lang-mm">လတ်ဆတ်သော ပင်စိမ်းရွက် - တစ်ဆုပ်ခန့်</span>
+                        </li>
+                        <li>
+                            <span class="lang-en">Premium Extra Virgin Olive Oil - 3 tbsp</span>
+                            <span class="lang-mm">အဆင့်မြင့် သံလွင်ဆီသန့် - ၃ စားပွဲတင်ဇွန်း</span>
+                        </li>
+                        <li>
+                            <span class="lang-en">Aged Balsamic Glaze - 1 tbsp</span>
+                            <span class="lang-mm">သက်တမ်းရင့် Balsamic ရှာလကာရည်အနှစ် - ၁ စားပွဲတင်ဇွန်း</span>
+                        </li>
+                        <li>
+                            <span class="lang-en">Maldon Sea Salt Flakes & Black Pepper - To taste</span>
+                            <span class="lang-mm">ပင်လယ်ဆားပွင့် နှင့် ငရုတ်ကောင်းမည်း - လိုသလောက်</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Preparation & Assembly (One-Grid Timeline with Images) -->
+                <div class="bg-black/30 p-6 md:p-8 rounded-2xl border border-gray-700/50 shadow-xl space-y-8">
+                    <h3
+                        class="text-2xl font-bold text-primary mb-2 flex items-center gap-3 border-b border-gray-800 pb-3">
+                        <i class="fas fa-fire-burner"></i>
+                        <span class="lang-en">Preparation & Assembly</span>
+                        <span class="lang-mm">ပြင်ဆင်ခြင်းနှင့် ပွဲပြင်ခြင်း</span>
+                    </h3>
+                    <div class="space-y-6">
+                        <!-- Step 1 -->
+                        <div
+                            class="flex flex-col md:flex-row gap-6 items-start bg-black/20 p-5 rounded-xl border border-gray-850 hover:border-gray-700 transition-colors">
+                            <div
+                                class="flex-shrink-0 w-12 h-12 rounded-full bg-secondary text-black font-bold flex items-center justify-center text-xl shadow-lg">
+                                1</div>
+                            <div class="w-full md:w-44 h-44 md:h-28 rounded-lg overflow-hidden shrink-0 shadow-md">
+                                <img src="tomato/1.png" alt="Basil Oil Infusion" class="w-full h-full object-cover">
+                            </div>
+                            <div class="flex-1 space-y-2">
+                                <h4 class="text-white font-bold text-lg">
+                                    <span class="lang-en">Basil Oil Infusion (Optional)</span>
+                                    <span class="lang-mm">ပင်စိမ်းဆီမွှေး ပြုလုပ်ခြင်း</span>
+                                </h4>
+                                <p class="text-gray-300 text-base leading-relaxed">
+                                    <span class="lang-en">Blanch half the basil leaves in boiling water for 10 seconds,
+                                        immediately transfer to ice water. Squeeze dry, blend with olive oil, and
+                                        strain.</span>
+                                    <span class="lang-mm">ပင်စိမ်းရွက်တစ်ဝက်ကို ရေနွေးပူပူတွင် ၁၀ စက္ကန့်ခန့် နှစ်ပြီး
+                                        ရေခဲရေထဲ ချက်ချင်းပြောင်းထည့်ပါ။ ရေစစ်ပြီး သံလွင်ဆီနှင့် ကြိတ်ကာ အရည်စစ်ယူပါက
+                                        ပင်စိမ်းဆီမွှေး ရရှိပါမည်။</span>
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Step 2 -->
+                        <div
+                            class="flex flex-col md:flex-row gap-6 items-start bg-black/20 p-5 rounded-xl border border-gray-850 hover:border-gray-700 transition-colors">
+                            <div
+                                class="flex-shrink-0 w-12 h-12 rounded-full bg-secondary text-black font-bold flex items-center justify-center text-xl shadow-lg">
+                                2</div>
+                            <div class="w-full md:w-44 h-44 md:h-28 rounded-lg overflow-hidden shrink-0 shadow-md">
+                                <img src="tomato/2.png" alt="Slice Tomatoes" class="w-full h-full object-cover">
+                            </div>
+                            <div class="flex-1 space-y-2">
+                                <h4 class="text-white font-bold text-lg">
+                                    <span class="lang-en">Slice Tomatoes</span>
+                                    <span class="lang-mm">ခရမ်းချဉ်သီးလှီးခြင်း</span>
+                                </h4>
+                                <p class="text-gray-300 text-base leading-relaxed">
+                                    <span class="lang-en">Cut the heirloom tomatoes into varying shapes (wedges and
+                                        thick slices) for aesthetic appeal.</span>
+                                    <span class="lang-mm">ပုံပန်းသဏ္ဍာန်လှပစေရန် ရောင်စုံခရမ်းချဉ်သီးများကို အထူ၊ အပါး၊
+                                        အစိပ် အမျိုးမျိုး လှီးဖြတ်ပါ။</span>
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Step 3 -->
+                        <div
+                            class="flex flex-col md:flex-row gap-6 items-start bg-black/20 p-5 rounded-xl border border-gray-850 hover:border-gray-700 transition-colors">
+                            <div
+                                class="flex-shrink-0 w-12 h-12 rounded-full bg-secondary text-black font-bold flex items-center justify-center text-xl shadow-lg">
+                                3</div>
+                            <div class="w-full md:w-44 h-44 md:h-28 rounded-lg overflow-hidden shrink-0 shadow-md">
+                                <img src="ee/3.png" alt="Macerate" class="w-full h-full object-cover">
+                            </div>
+                            <div class="flex-1 space-y-2">
+                                <h4 class="text-white font-bold text-lg">
+                                    <span class="lang-en">Macerate</span>
+                                    <span class="lang-mm">အရည်စစ်ထုတ်ခြင်း</span>
+                                </h4>
+                                <p class="text-gray-300 text-base leading-relaxed">
+                                    <span class="lang-en">Arrange the tomatoes on a flat serving dish. Sprinkle with a
+                                        generous pinch of flaky sea salt and let them sit for 10 minutes.</span>
+                                    <span class="lang-mm">ခရမ်းချဉ်သီးများကို ပန်းကန်ပြားပေါ် ဖြန့်ခင်းပါ။
+                                        ပင်လယ်ဆားပွင့် အနည်းငယ်ဖြူးပြီး ၁၀ မိနစ်ခန့်ထားပါ။</span>
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Step 4 -->
+                        <div
+                            class="flex flex-col md:flex-row gap-6 items-start bg-black/20 p-5 rounded-xl border border-gray-850 hover:border-gray-700 transition-colors">
+                            <div
+                                class="flex-shrink-0 w-12 h-12 rounded-full bg-secondary text-black font-bold flex items-center justify-center text-xl shadow-lg">
+                                4</div>
+                            <div class="w-full md:w-44 h-44 md:h-28 rounded-lg overflow-hidden shrink-0 shadow-md">
+                                <img src="tomato/4.png" alt="Position the Burrata" class="w-full h-full object-cover">
+                            </div>
+                            <div class="flex-1 space-y-2">
+                                <h4 class="text-white font-bold text-lg">
+                                    <span class="lang-en">Position the Burrata</span>
+                                    <span class="lang-mm">ဒိန်ခဲတင်ခြင်း</span>
+                                </h4>
+                                <p class="text-gray-300 text-base leading-relaxed">
+                                    <span class="lang-en">Carefully place the room-temperature Burrata ball in the
+                                        center of the tomatoes.</span>
+                                    <span class="lang-mm">အခန်းအပူချိန်ရှိနေသော ဘူရာတာဒိန်ခဲလုံးကို ခရမ်းချဉ်သီးများ၏
+                                        အလယ်တည့်တည့်တွင် ဂရုတစိုက် တင်ပါ။</span>
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Step 5 -->
+                        <div
+                            class="flex flex-col md:flex-row gap-6 items-start bg-black/20 p-5 rounded-xl border border-gray-850 hover:border-gray-700 transition-colors">
+                            <div
+                                class="flex-shrink-0 w-12 h-12 rounded-full bg-secondary text-black font-bold flex items-center justify-center text-xl shadow-lg">
+                                5</div>
+                            <div class="w-full md:w-44 h-44 md:h-28 rounded-lg overflow-hidden shrink-0 shadow-md">
+                                <img src="tomato/5.png" alt="Garnish & Serve" class="w-full h-full object-cover">
+                            </div>
+                            <div class="flex-1 space-y-2">
+                                <h4 class="text-white font-bold text-lg">
+                                    <span class="lang-en">Garnish & Serve</span>
+                                    <span class="lang-mm">အချောသတ် တည်ခင်းခြင်း</span>
+                                </h4>
+                                <p class="text-gray-300 text-base leading-relaxed">
+                                    <span class="lang-en">Drizzle the basil oil and balsamic glaze over the cheese and
+                                        tomatoes. Scatter fresh basil leaves and finish with black pepper.</span>
+                                    <span class="lang-mm">ပင်စိမ်းဆီ နှင့် Balsamic အနှစ်တို့ကို ဆမ်းပေးပါ။
+                                        ပင်စိမ်းရွက်များဖြူးပါ။ ငရုတ်ကောင်းမည်း ထပ်ဖြူးပြီး စားသုံးရန် တည်ခင်းပါ။</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+        </div>
+    </div>
+
+    <!-- Detail Page: MAIN COURSE -->
+    <div id="detail-main" class="detail-page hidden min-h-screen pt-32 pb-20 px-6 md:px-12 max-w-6xl mx-auto fade-in">
+        <button onclick="showMain()"
+            class="group mb-8 text-secondary hover:text-primary transition-colors flex items-center gap-2 font-semibold text-lg focus:outline-none">
+            <i class="fas fa-arrow-left transform group-hover:-translate-x-2 transition-transform duration-300"></i>
+            <span class="lang-en">Back to Menu</span>
+            <span class="lang-mm">ပင်မ မီနူးသို့ ပြန်သွားရန်</span>
+        </button>
+
+        <div class="bg-[#2A2A2A] p-6 md:p-12 rounded-2xl border border-gray-700 shadow-2xl space-y-10">
+            <h2 class="text-4xl md:text-5xl font-serif font-bold text-white mb-8 border-b border-gray-700 pb-6">
+                <span class="lang-en">Herb-Crusted Rack of Lamb</span>
+                <span class="lang-mm">ဟင်းခတ်အမွှေးအကြိုင်ကပ် သိုးနံရိုးကင်</span>
+            </h2>
+
+            <!-- History & Origin (With Image) -->
+            <div
+                class="mb-10 bg-gradient-to-r from-[#1f1a10] to-[#2A2A2A] rounded-xl border-l-4 border-secondary shadow-lg relative overflow-hidden flex flex-col md:flex-row">
+                <div
+                    class="absolute top-0 right-0 w-32 h-32 bg-secondary opacity-5 rounded-full -mr-10 -mt-10 pointer-events-none">
+                </div>
+                <div class="p-6 md:p-8 md:w-2/3">
+                    <h3 class="text-2xl font-serif font-bold text-secondary mb-4 flex items-center gap-3">
+                        <i class="fas fa-scroll text-xl"></i>
+                        <span class="lang-en">Culinary Heritage & Origin</span>
+                        <span class="lang-mm">ဟင်းပွဲရာဇဝင် နှင့် မူလဇာစ်မြစ်</span>
+                    </h3>
+                    <p class="text-gray-300 leading-relaxed text-base">
+                        <span class="lang-en"><strong>Origin: Provence, France.</strong> Roasting whole racks of lamb
+                            has been a centerpiece of feasts since ancient Roman times. However, the sophisticated
+                            technique of applying an herb and breadcrumb crust—known specifically as "Carré d'Agneau
+                            Provencal"—hails from Provence in southern France. The historical use of local herbs like
+                            rosemary and thyme was originally a practical way to preserve meat, evolving over centuries
+                            into this universally celebrated classic of fine dining.</span>
+                        <span class="lang-mm"><strong>မူလဇာစ်မြစ်: ပြင်သစ်နိုင်ငံ၊ ပရိုဗန့်စ် (Provence) ဒေသ။</strong>
+                            သိုးနံရိုးကင်ကို ပွဲတော်များ၏ အဓိကဟင်းလျာအဖြစ် ရောမခေတ်ကတည်းက စတင်စားသုံးခဲ့ကြသည်။
+                            သို့သော်လည်း အမွှေးအကြိုင်များနှင့် မုန့်ကြွပ်မှုန့်များကို အပေါ်ယံကပ်၍ ဖုတ်သည့် "Carré
+                            d'Agneau Provencal" ဟုခေါ်သော အဆင့်မြင့်ချက်ပြုတ်နည်းမှာ ပြင်သစ်နိုင်ငံတောင်ပိုင်း Provence
+                            ဒေသမှ ဆင်းသက်လာခြင်းဖြစ်သည်။ ဒေသထွက် ရို့စ်မေရီနှင့် စမုန်ဖြူတို့ကို အသုံးပြုခြင်းသည် ရှေးက
+                            အသားကြာရှည်ခံရန် အသုံးပြုခဲ့သော နည်းလမ်းဖြစ်ပြီး၊ ယခုအခါ ကမ္ဘာတစ်ဝှမ်း Fine Dining များ၏
+                            နာမည်ကျော် ဟင်းပွဲဖြစ်လာခဲ့ပါသည်။</span>
+                    </p>
+                </div>
+                <div class="md:w-1/3 min-h-[200px] max-h-[300px]">
+                    <img src="ee/poster.png" alt="Fresh Rosemary and Herbs" class="w-full h-full object-cover">
+                </div>
+            </div>
+
+            <!-- SOMMELIER & CHEF'S NOTES -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Wine Pairing -->
+                <div
+                    class="group relative bg-black/30 border border-gray-700/50 rounded-2xl flex flex-col items-center text-center overflow-hidden cursor-pointer shadow-lg hover:shadow-2xl transition-all duration-300">
+                    <div class="absolute inset-0 w-full h-full">
+                        <img src="https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?auto=format&fit=crop&q=80&w=600"
+                            alt="Wine Pairing"
+                            class="w-full h-full object-cover opacity-20 group-hover:opacity-40 group-hover:scale-110 transition-all duration-700 ease-in-out">
+                        <div
+                            class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent group-hover:via-black/30 transition-all duration-500">
+                        </div>
+                    </div>
+                    <div class="relative z-10 p-6 flex flex-col items-center w-full h-full">
+                        <div
+                            class="w-14 h-14 bg-secondary/10 text-secondary rounded-full flex items-center justify-center text-2xl mb-4 group-hover:bg-secondary group-hover:text-black transition-colors duration-300">
+                            <i class="fas fa-wine-glass-alt"></i>
+                        </div>
+                        <h4
+                            class="text-lg font-bold text-white mb-2 group-hover:text-secondary transition-colors duration-300">
+                            <span class="lang-en">Sommelier's Wine Pairing</span>
+                            <span class="lang-mm">ဝိုင်တွဲဖက်မှု အကြံပြုချက်</span>
+                        </h4>
+                        <p class="text-gray-300 text-sm mt-auto">
+                            <span class="lang-en">A bold, full-bodied red wine like <strong>Syrah / Shiraz</strong> or
+                                <strong>Cabernet Sauvignon</strong>. The robust tannins cut beautifully through the
+                                rich, juicy fat of the lamb.</span>
+                            <span class="lang-mm">ကိုယ်ထည်ပြည့်ဝပြီး ရနံ့ပြင်းရှသော <strong>Syrah (ဝိုင်နီ)</strong>
+                                သို့မဟုတ် <strong>Cabernet Sauvignon</strong>။ ဝိုင်၏ အဖန်ဓာတ်က သိုးသား၏အဆီဓာတ်ကို
+                                ချေဖျက်ပေးပြီး အရသာကို ပိုမိုခံတွင်းတွေ့စေပါသည်။</span>
+                        </p>
+                    </div>
+                </div>
+                <!-- Allergen Info -->
+                <div
+                    class="group relative bg-black/30 border border-gray-700/50 rounded-2xl flex flex-col items-center text-center overflow-hidden cursor-pointer shadow-lg hover:shadow-2xl transition-all duration-300">
+                    <div class="absolute inset-0 w-full h-full">
+                        <img src="https://images.unsplash.com/photo-1498837167922-ddd27525d352?auto=format&fit=crop&q=80&w=600"
+                            alt="Dietary"
+                            class="w-full h-full object-cover opacity-20 group-hover:opacity-40 group-hover:scale-110 transition-all duration-700 ease-in-out">
+                        <div
+                            class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent group-hover:via-black/30 transition-all duration-500">
+                        </div>
+                    </div>
+                    <div class="relative z-10 p-6 flex flex-col items-center w-full h-full">
+                        <div
+                            class="w-14 h-14 bg-primary/10 text-primary rounded-full flex items-center justify-center text-2xl mb-4 group-hover:bg-primary group-hover:text-black transition-colors duration-300">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <h4
+                            class="text-lg font-bold text-white mb-2 group-hover:text-primary transition-colors duration-300">
+                            <span class="lang-en">Dietary & Allergens</span>
+                            <span class="lang-mm">ဓာတ်မတည့်မှု အချက်အလက်</span>
+                        </h4>
+                        <div class="flex flex-wrap gap-2 justify-center mb-2">
+                            <span
+                                class="px-2 py-0.5 bg-red-900/60 text-red-300 border border-red-700/50 text-xs rounded-full font-semibold">Contains
+                                Nuts</span>
+                            <span
+                                class="px-2 py-0.5 bg-yellow-900/60 text-yellow-300 border border-yellow-700/50 text-xs rounded-full font-semibold">Contains
+                                Dairy</span>
+                            <span
+                                class="px-2 py-0.5 bg-orange-900/60 text-orange-300 border border-orange-700/50 text-xs rounded-full font-semibold">Mustard</span>
+                        </div>
+                        <p class="text-gray-300 text-sm mt-auto">
+                            <span class="lang-en">Contains <strong>Pistachios</strong> (Nuts), <strong>Gluten</strong>
+                                (Breadcrumbs), and <strong>Dairy</strong> (in mashed potatoes). Nut-free version can use
+                                pumpkin seeds.</span>
+                            <span class="lang-mm"><strong>ပစ်စတာချီယို</strong> (အခွံမာသီး)၊ <strong>ဂျုံ</strong>
+                                (ပေါင်မုန့်ခြောက်) နှင့် <strong>နို့ထွက်ပစ္စည်း</strong> (အာလူးထောင်း) ပါဝင်သည်။
+                                အခွံမာသီးမတည့်ပါက ဖရုံစေ့နှင့် အစားထိုးနိုင်သည်။</span>
+                        </p>
+                    </div>
+                </div>
+                <!-- Plating Aesthetics -->
+                <div
+                    class="group relative bg-black/30 border border-gray-700/50 rounded-2xl flex flex-col items-center text-center overflow-hidden cursor-pointer shadow-lg hover:shadow-2xl transition-all duration-300">
+                    <div class="absolute inset-0 w-full h-full">
+                        <img src="image/Gemini_Generated_Image_eorlueeorlueeorl.png" alt="Plating"
+                            class="w-full h-full object-cover opacity-20 group-hover:opacity-40 group-hover:scale-110 transition-all duration-700 ease-in-out">
+                        <div
+                            class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent group-hover:via-black/30 transition-all duration-500">
+                        </div>
+                    </div>
+                    <div class="relative z-10 p-6 flex flex-col items-center w-full h-full">
+                        <div
+                            class="w-14 h-14 bg-blue-500/10 text-blue-400 rounded-full flex items-center justify-center text-2xl mb-4 group-hover:bg-blue-500 group-hover:text-black transition-colors duration-300">
+                            <i class="fas fa-palette"></i>
+                        </div>
+                        <h4
+                            class="text-lg font-bold text-white mb-2 group-hover:text-blue-400 transition-colors duration-300">
+                            <span class="lang-en">Plating & Presentation</span>
+                            <span class="lang-mm">ပန်းကန်ပြင်ဆင်ပုံအလှ</span>
+                        </h4>
+                        <p class="text-gray-300 text-sm mt-auto">
+                            <span class="lang-en">Spoon smoke potato purée off-center. Nest two interlocking sliced lamb
+                                chops on top. Drizzle the deep glossy red wine reduction around the plate, not on the
+                                crust.</span>
+                            <span class="lang-mm">အာလူးထောင်းကို ပန်းကန်၏ဘေးစောင်းတွင် ခင်းပါ။ သိုးနံရိုးကင်ကို
+                                တစ်ခုပေါ်တစ်ခု ယှက်တင်ပါ။ ဝိုင်နီဆော့စ်ကို သိုးသားအမွှေးအကြိုင်ကပ်များပေါ် မထိစေဘဲ
+                                ပန်းကန်ဘေးပတ်လည်တွင် ဆမ်းပါ။</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ONE GRID FLOW -->
+            <div class="space-y-12">
+                <!-- Marinade Details (With Image) -->
+                <div
+                    class="bg-red-900/30 rounded-xl border border-gray-700/50 shadow-lg overflow-hidden group cursor-pointer">
+                    <div class="overflow-hidden h-48 relative">
+                        <img src="ee/uiami2.png" alt="Spices and Herbs"
+                            class="w-full h-full object-cover opacity-70 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+                        <h4 class="absolute bottom-4 left-4 text-2xl font-bold text-white flex items-center gap-3">
+                            <i class="fas fa-mortar-pestle text-secondary"></i>
+                            <span class="lang-en">The Crust & Marinade</span>
+                            <span class="lang-mm">အသားနယ်ခြင်း အဆင့်</span>
+                        </h4>
+                    </div>
+                    <div class="p-6">
+                        <ul class="text-base text-gray-200 space-y-4">
+                            <li><strong><span class="lang-en text-white">Crust Mix:</span><span
+                                        class="lang-mm text-white">အပေါ်ယံကပ်ရန်:</span></strong>
+                                <span class="lang-en">1/2 cup finely crushed pistachios, 1/4 cup panko breadcrumbs, 2
+                                    tbsp fresh rosemary (finely chopped), 1 tbsp parsley. Mix well.</span>
+                                <span class="lang-mm">ပစ်စတာချီယိုစေ့ထောင်း (ခွက်တစ်ဝက်)၊ ပန်ကို ပေါင်မုန့်ခြောက်မှုန့်
+                                    (၁/၄ ခွက်)၊ ရို့စ်မေရီရွက်စင်း (၂ ဇွန်း)၊ နံနံပင် (၁ ဇွန်း) တို့ကို
+                                    သမအောင်နယ်ထားပါ။</span>
+                            </li>
+                            <li><strong><span class="lang-en text-white">The Binder:</span><span
+                                        class="lang-mm text-white">အသားကပ်ဆေး:</span></strong>
+                                <span class="lang-en">2 tbsp Dijon Mustard. This is brushed onto the seared meat to hold
+                                    the crust.</span>
+                                <span class="lang-mm">ဒီဂျွန် မုန်ညင်းဆော့စ် (Dijon Mustard) ၂ ဇွန်း။ အပေါ်ယံအလွှာ
+                                    ကပ်နေစေရန် ကြော်ထားသောအသားပေါ် သုတ်လိမ်းရမည်။</span>
+                            </li>
+                            <li><strong><span class="lang-en text-white">Meat Prep:</span><span
+                                        class="lang-mm text-white">အသားပြင်ဆင်ခြင်း:</span></strong>
+                                <span class="lang-en">Score the fat cap of the lamb. Generously salt and pepper the meat
+                                    <strong>45 minutes before cooking</strong>. Let it rest at room temperature.</span>
+                                <span class="lang-mm">သိုးသား၏ အဆီဖတ်နေရာကို ဓားရာပေးပါ။ <strong>မချက်မီ ၄၅
+                                        မိနစ်ကြို၍</strong> ဆား၊ ငရုတ်ကောင်း လုံလောက်စွာ နယ်ထားပါ။ အခန်းအပူချိန်တွင်
+                                    ထားပါ။</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Smoked Potato Purée Card -->
+                <div
+                    class="bg-black/40 rounded-xl border border-gray-700/50 shadow-lg overflow-hidden group cursor-pointer">
+                    <div class="overflow-hidden h-48 relative">
+                        <img src="image/potato.png" alt="Smoked Mashed Potatoes"
+                            class="w-full h-full object-cover opacity-70 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+                        <h4 class="absolute bottom-4 left-4 text-2xl font-bold text-white flex items-center gap-3">
+                            <i class="fas fa-smoke text-secondary animate-pulse"></i>
+                            <span class="lang-en">Smoked Potato Purée (Side Prep)</span>
+                            <span class="lang-mm">အာလူးထောင်း ပြင်ဆင်ပုံအဆင့်ဆင့်</span>
+                        </h4>
+                    </div>
+                    <div class="p-6 text-gray-300">
+                        <ul class="text-base grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <li>
+                                <strong class="text-white"><span class="lang-en">1. Boil:</span><span class="lang-mm">၁။
+                                        ပြုတ်ခြင်း-</span></strong>
+                                <span class="lang-en">Peel and cube 2 large potatoes. Place in cold salted water, bring
+                                    to a boil, and simmer for 15-20 minutes until fork-tender. Drain completely.</span>
+                                <span class="lang-mm">အာလူးကြီးကြီး ၂ လုံးကို အခွံနွှာပြီး အတုံးတုံးပါ။ ရေအေးထဲ
+                                    ဆားအနည်းငယ်ထည့်ကာ အာလူးနူးအိသွားသည်အထိ ၁၅ မိနစ်မှ မိနစ် ၂၀ ခန့် ပြုတ်ပြီး
+                                    ရေစစ်ထားပါ။</span>
+                            </li>
+                            <li>
+                                <strong class="text-white"><span class="lang-en">2. Mash & Sieve:</span><span
+                                        class="lang-mm">၂။ ညက်အောင်ခြေခြင်း-</span></strong>
+                                <span class="lang-en">Pass the potatoes through a fine mesh sieve or potato ricer. This
+                                    removes all lumps and ensures a silky, Michelin-standard velouté texture.</span>
+                                <span class="lang-mm">အာလူးများကို အဖုအပိမ့်များမကျန်စေရန် ဇကာစိပ်စိပ် သို့မဟုတ်
+                                    အာလူးကြိတ်စက်ဖြင့် သေချာစွာ ညက်နေအောင် တိုက်ချပါ။</span>
+                            </li>
+                            <li>
+                                <strong class="text-white"><span class="lang-en">3. Emulsify:</span><span
+                                        class="lang-mm">၃။ ခရင်မ်နှင့် ထောပတ်ရောခြင်း-</span></strong>
+                                <span class="lang-en">Gently whisk in 3 tbsp of warm unsalted butter and 1/4 cup of warm
+                                    heavy cream until perfectly incorporated and glossy. Season with salt and white
+                                    pepper.</span>
+                                <span class="lang-mm">နွေးနေတဲ့ ထောပတ် ၃ ဇွန်း နဲ့ ဟဲဗီးခရင်မ် (Heavy Cream) ၁/၄ ခွက်ကို
+                                    အာလူးထဲထည့်ပြီး ပြောင်ချောပြောင်တင်းဖြစ်လာသည်အထိ မွှေပေးပါ။ ဆား၊
+                                    ငရုတ်ကောင်းဖြူဖြူးပါ။</span>
+                            </li>
+                            <li>
+                                <strong class="text-white"><span class="lang-en">4. Infuse Smoke (Secret):</span><span
+                                        class="lang-mm">၄။ အခိုးအငွေ့နံ့သွင်းခြင်း (လျှို့ဝှက်ချက်)-</span></strong>
+                                <span class="lang-en">Place the purée in a bowl, cover with plastic wrap. Insert the
+                                    hose of a smoking gun loaded with applewood chips, fill with smoke for 2 minutes,
+                                    then seal and let it rest to absorb the rich aroma.</span>
+                                <span class="lang-mm">အာလူးထောင်းကို ဇလုံတစ်ခုထဲထည့်ပြီး ပလတ်စတစ်ဖြင့် အုပ်ထားပါ။
+                                    ပန်းသီးပင်အခေါက် (Applewood) သုံးထားတဲ့ Smoking Gun ပိုက်ကိုထည့်ပြီး အခိုးအငွေ့များ
+                                    မိနစ် ၂၀ ခန့် သွင်းနှပ်ထားပေးခြင်းဖြင့် ဆွဲဆောင်မှုရှိတဲ့ မီးခိုးနံ့သင်းသင်းလေး
+                                    ရရှိစေပါတယ်။</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Main Ingredients Card -->
+                <div class="bg-black/30 p-6 md:p-8 rounded-2xl border border-gray-700/50 shadow-xl">
+                    <h3
+                        class="text-2xl font-bold text-primary mb-6 flex items-center gap-3 border-b border-gray-800 pb-3">
+                        <i class="fas fa-clipboard-list"></i>
+                        <span class="lang-en">Main Ingredients</span>
+                        <span class="lang-mm">အဓိက ပါဝင်ပစ္စည်းများ</span>
+                    </h3>
+                    <ul class="ingredient-list text-gray-300 text-lg grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <li>
+                            <span class="lang-en">Rack of Lamb (French-trimmed, 8 ribs) - 1 pc</span>
+                            <span class="lang-mm">သိုးနံရိုး (အရိုးဖော်ထားသော၊ နံရိုး ၈ ချောင်းပါ) - ၁ ခု</span>
+                        </li>
+                        <li>
+                            <span class="lang-en">Olive Oil - 2 tbsp</span>
+                            <span class="lang-mm">သံလွင်ဆီ - ၂ စားပွဲတင်ဇွန်း</span>
+                        </li>
+                        <li>
+                            <span class="lang-en">Beef or Veal Stock - 1 cup</span>
+                            <span class="lang-mm">အမဲ (သို့) နွားငယ် ပြုတ်ရည် - ၁ ခွက်</span>
+                        </li>
+                        <li>
+                            <span class="lang-en">Dry Red Wine - 1/2 cup</span>
+                            <span class="lang-mm">ဝိုင်နီ - ၁/၂ ခွက်</span>
+                        </li>
+                        <li>
+                            <span class="lang-en">Potatoes (large) - 2 pcs</span>
+                            <span class="lang-mm">အာလူးကြီးကြီး - ၂ လုံး</span>
+                        </li>
+                        <li>
+                            <span class="lang-en">Butter, Cream, Salt, Pepper - As needed</span>
+                            <span class="lang-mm">ထောပတ်၊ ခရင်မ်၊ ဆား၊ ငရုတ်ကောင်း - လိုသလောက်</span>
+                        </li>
+                    </ul>
+                </div>>
+
+                <!-- Cooking Execution (One-Grid Timeline with Images) -->
+                <div class="bg-black/30 p-6 md:p-8 rounded-2xl border border-gray-700/50 shadow-xl space-y-8">
+                    <h3
+                        class="text-2xl font-bold text-primary mb-2 flex items-center gap-3 border-b border-gray-800 pb-3">
+                        <i class="fas fa-fire-burner"></i>
+                        <span class="lang-en">Cooking Execution</span>
+                        <span class="lang-mm">ချက်ပြုတ်ခြင်း အဆင့်ဆင့်</span>
+                    </h3>
+                    <div class="space-y-6">
+                        <!-- Step 1 -->
+                        <div
+                            class="flex flex-col md:flex-row gap-6 items-start bg-black/20 p-5 rounded-xl border border-gray-850 hover:border-gray-700 transition-colors">
+                            <div
+                                class="flex-shrink-0 w-12 h-12 rounded-full bg-secondary text-black font-bold flex items-center justify-center text-xl shadow-lg">
+                                1</div>
+                            <div class="w-full md:w-44 h-44 md:h-28 rounded-lg overflow-hidden shrink-0 shadow-md">
+                                <img src="ee/1.png" alt="Sear the Lamb" class="w-full h-full object-cover">
+                            </div>
+                            <div class="flex-1 space-y-2">
+                                <h4 class="text-white font-bold text-lg">
+                                    <span class="lang-en">Sear the Lamb</span>
+                                    <span class="lang-mm">သိုးသားကြော်ခြင်း</span>
+                                </h4>
+                                <p class="text-gray-300 text-base leading-relaxed">
+                                    <span class="lang-en">Preheat oven to 400°F (200°C). Heat olive oil in an oven-proof
+                                        skillet over high heat. Sear the lamb rack, fat side down first, until heavily
+                                        browned (approx 4 mins). Sear the other side for 2 mins.</span>
+                                    <span class="lang-mm">Oven ကို 200°C ဖြင့် ကြိုအပူပေးပါ။ ဒယ်အိုးတွင် ဆီပူလာလျှင်
+                                        သိုးသားအဆီဖက်ကို အောက်ခံကာ အညိုရောင်ရင့်လာသည်အထိ (၄ မိနစ်ခန့်) ကြော်ပါ။
+                                        အခြားတစ်ဖက်ကို ၂ မိနစ် ကြော်ပါ။</span>
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Step 2 -->
+                        <div
+                            class="flex flex-col md:flex-row gap-6 items-start bg-black/20 p-5 rounded-xl border border-gray-850 hover:border-gray-700 transition-colors">
+                            <div
+                                class="flex-shrink-0 w-12 h-12 rounded-full bg-secondary text-black font-bold flex items-center justify-center text-xl shadow-lg">
+                                2</div>
+                            <div class="w-full md:w-44 h-44 md:h-28 rounded-lg overflow-hidden shrink-0 shadow-md">
+                                <img src="ee/2.png" alt="Apply Crust" class="w-full h-full object-cover">
+                            </div>
+                            <div class="flex-1 space-y-2">
+                                <h4 class="text-white font-bold text-lg">
+                                    <span class="lang-en">Apply Crust</span>
+                                    <span class="lang-mm">အပေါ်ယံကပ်ခြင်း</span>
+                                </h4>
+                                <p class="text-gray-300 text-base leading-relaxed">
+                                    <span class="lang-en">Remove lamb from heat. Brush the meat side generously with
+                                        Dijon mustard. Press the prepared pistachio/herb mixture firmly into the
+                                        mustard.</span>
+                                    <span class="lang-mm">အသားကို မီးပေါ်မှချပါ။ မုန်ညင်းဆော့စ်ကို အသားပေါ် အနှံ့သုတ်ပါ။
+                                        ထို့နောက် ကြိုစပ်ထားသော ပစ်စတာချီယို/အမွှေးအကြိုင်မှုန့်များကို ခပ်တင်းတင်း
+                                        ဖိကပ်ပေးပါ။</span>
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Step 3 -->
+                        <div
+                            class="flex flex-col md:flex-row gap-6 items-start bg-black/20 p-5 rounded-xl border border-gray-850 hover:border-gray-700 transition-colors">
+                            <div
+                                class="flex-shrink-0 w-12 h-12 rounded-full bg-secondary text-black font-bold flex items-center justify-center text-xl shadow-lg">
+                                3</div>
+                            <div class="w-full md:w-44 h-44 md:h-28 rounded-lg overflow-hidden shrink-0 shadow-md">
+                                <img src="ee/3.png" alt="Roast" class="w-full h-full object-cover">
+                            </div>
+                            <div class="flex-1 space-y-2">
+                                <h4 class="text-white font-bold text-lg">
+                                    <span class="lang-en">Roast</span>
+                                    <span class="lang-mm">Oven ဖုတ်ခြင်း</span>
+                                </h4>
+                                <p class="text-gray-300 text-base leading-relaxed">
+                                    <span class="lang-en">Place the skillet in the preheated oven. Roast for 12-15
+                                        minutes for medium-rare (internal temp 130°F / 54°C).</span>
+                                    <span class="lang-mm">ဒယ်အိုးကို Oven ထဲထည့်ပါ။ Medium-rare အနေအထားရရန်
+                                        (အတွင်းအပူချိန် 54°C) ၁၂-၁၅ မိနစ်ခန့် ဖုတ်ပါ။</span>
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Step 4 -->
+                        <div
+                            class="flex flex-col md:flex-row gap-6 items-start bg-black/20 p-5 rounded-xl border border-gray-850 hover:border-gray-700 transition-colors">
+                            <div
+                                class="flex-shrink-0 w-12 h-12 rounded-full bg-secondary text-black font-bold flex items-center justify-center text-xl shadow-lg">
+                                4</div>
+                            <div class="w-full md:w-44 h-44 md:h-28 rounded-lg overflow-hidden shrink-0 shadow-md">
+                                <img src="ee/4.png" alt="Resting" class="w-full h-full object-cover">
+                            </div>
+                            <div class="flex-1 space-y-2">
+                                <h4 class="text-white font-bold text-lg">
+                                    <span class="lang-en">Resting (Crucial)</span>
+                                    <span class="lang-mm">နှပ်ထားခြင်း (အရေးကြီး)</span>
+                                </h4>
+                                <p class="text-gray-300 text-base leading-relaxed">
+                                    <span class="lang-en">Remove from oven, transfer to a cutting board, and tent
+                                        loosely with foil. Let it rest for 10 minutes to redistribute juices. Do not
+                                        skip this!</span>
+                                    <span class="lang-mm">Oven ထဲမှထုတ်ပြီး စဉ်းတီတုံးပေါ်တင်ကာ ခဲပတ်ဖြင့် ဖုံးထားပါ။
+                                        အသားရည်များ ပြန်လည်ပျံ့နှံ့စေရန် ၁၀ မိနစ်ခန့် မလှီးဘဲ နှပ်ထားပါ။ (ဤအဆင့်
+                                        မဖြစ်မနေလုပ်ရန်!)</span>
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Step 5 -->
+                        <div
+                            class="flex flex-col md:flex-row gap-6 items-start bg-black/20 p-5 rounded-xl border border-gray-850 hover:border-gray-700 transition-colors">
+                            <div
+                                class="flex-shrink-0 w-12 h-12 rounded-full bg-secondary text-black font-bold flex items-center justify-center text-xl shadow-lg">
+                                5</div>
+                            <div class="w-full md:w-44 h-44 md:h-28 rounded-lg overflow-hidden shrink-0 shadow-md">
+                                <img src="ee/5.png" alt="Sauce & Plating" class="w-full h-full object-cover">
+                            </div>
+                            <div class="flex-1 space-y-2">
+                                <h4 class="text-white font-bold text-lg">
+                                    <span class="lang-en">Sauce & Plating</span>
+                                    <span class="lang-mm">ဆော့စ်နှင့် ပွဲပြင်ခြင်း</span>
+                                </h4>
+                                <p class="text-gray-300 text-base leading-relaxed">
+                                    <span class="lang-en">Deglaze skillet with wine, add stock, reduce. Whisk in butter.
+                                        Slice lamb, serve over the freshly prepared Smoked Potato Purée, and drizzle
+                                        with reduction.</span>
+                                    <span class="lang-mm">ဒယ်အိုးထဲ ဝိုင်နီနှင့် ပြုတ်ရည်ထည့်ကျိုပါ။ ထောပတ်မွှေပါ။
+                                        သိုးသားကို လှီးပြီး အသင့်ပြင်ဆင်ထားသော အာလူးထောင်းပေါ်တင်ကာ ဆော့စ်ဆမ်း၍
+                                        တည်ခင်းပါ။</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+        </div>
+    </div>
+
+    <script>
+        // Language Switching Logic
+        function setLanguage(lang) {
+            const body = document.body;
+            const btnEn = document.getElementById('btn-en');
+            const btnMm = document.getElementById('btn-mm');
+
+            if (lang === 'mm') {
+                body.classList.add('mm-active');
+                btnMm.classList.remove('text-gray-400');
+                btnMm.classList.add('text-secondary');
+                btnEn.classList.remove('text-secondary');
+                btnEn.classList.add('text-gray-400');
+            } else {
+                body.classList.remove('mm-active');
+                btnEn.classList.remove('text-gray-400');
+                btnEn.classList.add('text-secondary');
+                btnMm.classList.remove('text-secondary');
+                btnMm.classList.add('text-gray-400');
+            }
+        }
+
+        // Page Navigation Logic
+        function showPage(pageId) {
+            // Hide Main View
+            document.getElementById('main-view').classList.add('hidden');
+
+            // Hide all detail pages just to be safe
+            const detailPages = document.querySelectorAll('.detail-page');
+            detailPages.forEach(page => {
+                page.classList.add('hidden');
+            });
+
+            // Show the target page
+            const targetPage = document.getElementById(pageId);
+            if (targetPage) {
+                targetPage.classList.remove('hidden');
+                // Scroll to top smoothly
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        function showMain() {
+            // Hide all detail pages
+            const detailPages = document.querySelectorAll('.detail-page');
+            detailPages.forEach(page => {
+                page.classList.add('hidden');
+            });
+
+            // Show Main View
+            document.getElementById('main-view').classList.remove('hidden');
+
+            // Scroll to top smoothly
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // 3D Parallax Background Effect combined with Scroll Parallax
+        let mouseX = 0;
+        let mouseY = 0;
+
+        function updateParallax() {
+            const scrollY = window.scrollY;
+            const layer1 = document.getElementById('parallax-layer-1');
+            const layer2 = document.getElementById('parallax-layer-2');
+            const layer3 = document.getElementById('parallax-layer-3');
+
+            // Layer 1 (Deepest): Parallax scroll down slightly, minimal mouse tilt
+            if (layer1) layer1.style.transform = `translate3d(0, ${scrollY * 0.15}px, -50px) rotateY(${mouseX}deg) rotateX(${mouseY}deg) scale(1.05)`;
+            
+            // Layer 2 (Middle): Floating lights scroll up slightly
+            if (layer2) layer2.style.transform = `translate3d(0, ${scrollY * -0.1}px, 0px) rotateY(${mouseX * 1.5}deg) rotateX(${mouseY * 1.5}deg)`;
+            
+            // Layer 3 (Closest): Culinary elements scroll up faster for strong depth
+            if (layer3) layer3.style.transform = `translate3d(0, ${scrollY * -0.3}px, 50px) rotateY(${mouseX * 2.5}deg) rotateX(${mouseY * 2.5}deg)`;
+        }
+
+        document.addEventListener('mousemove', (e) => {
+            if (window.innerWidth < 768) return; // Only apply on desktop
+            mouseX = (window.innerWidth / 2 - e.pageX) / 70;
+            mouseY = (window.innerHeight / 2 - e.pageY) / 70;
+            updateParallax();
+        });
+
+        window.addEventListener('scroll', () => {
+            updateParallax();
+        });
+        
+        document.addEventListener('mouseleave', () => {
+            mouseX = 0;
+            mouseY = 0;
+            updateParallax();
+        });
+        </script>
+    <!-- Content Modal -->
+    <div id="content-modal" class="fixed inset-0 z-[100] bg-black/95 hidden flex flex-col items-center justify-center opacity-0 transition-opacity duration-300 p-4 md:p-8 overflow-hidden">
+        <button onclick="closeContentModal()" class="fixed top-4 right-4 md:top-6 md:right-6 text-white hover:text-primary text-3xl md:text-4xl focus:outline-none transition-colors z-[110] bg-black/50 hover:bg-black/80 rounded-full w-12 h-12 md:w-14 md:h-14 flex items-center justify-center border border-gray-700 hover:border-primary shadow-lg backdrop-blur-sm">
+            <i class="fas fa-times"></i>
+        </button>
+        <div class="modal-content w-full max-w-4xl h-[90vh] bg-[#1A1A1A] rounded-2xl p-5 md:p-8 shadow-2xl transform scale-95 transition-transform duration-300 flex flex-col gap-5 relative border border-gray-700/50 overflow-hidden">
+            <div class="w-full flex justify-center shrink-0">
+                <img id="content-modal-img" src="" class="w-full h-[30vh] md:h-[40vh] object-cover rounded-xl shadow-md hidden border border-gray-700/50">
+            </div>
+            <div id="content-modal-text" class="flex flex-col text-gray-200 w-full space-y-4 overflow-y-auto custom-scrollbar flex-1 pr-2">
+                <!-- Text Content will be injected here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openContentModal(card) {
+            const modal = document.getElementById('content-modal');
+            const modalImg = document.getElementById('content-modal-img');
+            const modalText = document.getElementById('content-modal-text');
+            
+            modalText.innerHTML = '';
+            
+            // 1. Get Image
+            let imgSrc = '';
+            const imgEl = card.querySelector('img');
+            if (imgEl && !imgEl.classList.contains('rounded-full')) {
+                imgSrc = imgEl.src;
+            }
+            
+            // 2. Clone and extract text
+            const clone = card.cloneNode(true);
+            
+            // Process images in the clone
+            const cloneImgs = clone.querySelectorAll('img');
+            cloneImgs.forEach(img => {
+                // If the image is inside a grid/flex column (like History & Origin), remove the whole column
+                if (img.parentElement.classList.contains('md:w-1/3') || img.parentElement.classList.contains('w-1/3')) {
+                    img.parentElement.remove();
+                } else if(img.parentElement.classList.contains('absolute') || img.parentElement.classList.contains('overflow-hidden') || img.parentElement.classList.contains('shrink-0')){
+                    // Remove extracted images from the text clone
+                    img.parentElement.remove();
+                } else {
+                    img.remove();
+                }
+            });
+
+            // Remove hover overlays from clone
+            const overlays = clone.querySelectorAll('.fa-search-plus');
+            overlays.forEach(icon => {
+                if(icon.parentElement) icon.parentElement.remove();
+            });
+
+            // Clean up the clone's classes to fit the modal layout
+            clone.classList.remove('cursor-pointer', 'hover:scale-[1.01]', 'hover:border-primary/50', 'group', 'border-l-4');
+            
+            // Preserve flex-row if it was a timeline step, but allow wrapping on small screens
+            if (clone.classList.contains('md:flex-row')) {
+                clone.className = 'flex flex-col gap-6 w-full items-start';
+            } else {
+                clone.className = 'flex flex-col gap-4 w-full';
+            }
+            
+            // Adjust inner columns to full width to prevent overflow
+            const innerCols = clone.querySelectorAll('.md\\:w-1\\/3, .md\\:w-2\\/3, .w-full, .md\\:w-44');
+            innerCols.forEach(c => {
+                c.classList.remove('md:w-1/3', 'md:w-2/3', 'w-full', 'md:w-44', 'min-h-[200px]', 'max-h-[300px]');
+                c.classList.add('w-full');
+            });
+
+            // Scale font sizes mildly so it remains readable while fitting well
+            let textHtml = clone.innerHTML;
+            textHtml = textHtml
+                .replace(/text-3xl/g, 'text-2xl')
+                .replace(/text-2xl/g, 'text-xl')
+                .replace(/text-xl/g, 'text-lg')
+                .replace(/text-lg/g, 'text-base')
+                .replace(/w-14 h-14/g, 'w-12 h-12 text-lg') // Info card icons (make them slightly smaller)
+                .replace(/text-gray-300/g, 'text-gray-200'); // Brighter text for readability
+                
+            modalText.innerHTML = textHtml;
+            
+            // 3. Update Image
+            if (imgSrc) {
+                modalImg.src = imgSrc;
+                modalImg.classList.remove('hidden');
+            } else {
+                modalImg.classList.add('hidden');
+            }
+            
+            // 4. Show Modal
+            modal.classList.remove('hidden');
+            void modal.offsetWidth; // Reflow
+            modal.classList.remove('opacity-0');
+            modal.querySelector('.modal-content').classList.remove('scale-95');
+            modal.querySelector('.modal-content').classList.add('scale-100');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeContentModal() {
+            const modal = document.getElementById('content-modal');
+            modal.classList.add('opacity-0');
+            modal.querySelector('.modal-content').classList.remove('scale-100');
+            modal.querySelector('.modal-content').classList.add('scale-95');
+            
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                document.getElementById('content-modal-img').src = '';
+                document.getElementById('content-modal-text').innerHTML = '';
+                document.body.style.overflow = '';
+            }, 300);
+        }
+
+        // Attach click events to the specific cards when DOM loads
+        document.addEventListener('DOMContentLoaded', () => {
+            const detailPages = document.querySelectorAll('div[id^="detail-"]');
+            
+            detailPages.forEach(page => {
+                // Select only the specific cards requested
+                const cards = page.querySelectorAll('.flex.flex-col.md\\:flex-row.gap-6.items-start, .group.relative.bg-black\\/30, .border-l-4, .bg-secondary\\/10.rounded-xl, .bg-gray-800.rounded-xl, .bg-black\\/40.rounded-xl.border');
+                
+                cards.forEach(card => {
+                    if (!card.classList.contains('modal-enabled')) {
+                        card.classList.add('modal-enabled', 'cursor-pointer', 'relative', 'transition-transform', 'duration-300', 'hover:scale-[1.01]', 'hover:border-primary/50');
+                        
+                        // Add magnifying glass overlay
+                        const overlay = document.createElement('div');
+                        card.classList.add('group'); // Ensure group is present for hover
+                        overlay.className = 'absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors duration-300 rounded-xl z-20 pointer-events-none flex items-center justify-center opacity-0 group-hover:opacity-100';
+                        overlay.innerHTML = '<i class="fas fa-search-plus text-white/90 text-5xl drop-shadow-2xl transform scale-50 group-hover:scale-100 transition-transform duration-300"></i>';
+                        
+                        // Adjust position if static
+                        if (window.getComputedStyle(card).position === 'static') {
+                            card.style.position = 'relative';
+                        }
+                        card.appendChild(overlay);
+                        
+                        card.addEventListener('click', (e) => {
+                            e.stopPropagation();
+                            openContentModal(card);
+                        });
+                    }
+                });
+            });
+
+            // Close on outside click
+            const modal = document.getElementById('content-modal');
+            if (modal) {
+                modal.addEventListener('click', (e) => {
+                    if (e.target === modal) {
+                        closeContentModal();
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>
